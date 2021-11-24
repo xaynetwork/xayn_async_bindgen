@@ -1,0 +1,15 @@
+[workspace]
+members = [
+    # "easync-core",
+    "easync-rust-dart-io-utils",
+    "easync-codegen",
+]
+resolver = "2"
+
+[workspace.metadata]
+# minimum supported rust version
+msrv = "1.51.0"
+
+[patch.crates-io]
+dart-api-dl = { path = "../../dart-api-dl/dart-api-dl" }
+dart-api-dl-sys = { path = "../../dart-api-dl/dart-api-dl-sys" }
