@@ -2,9 +2,9 @@
 // add easync-dart-js-utils
 use std::future::Future;
 
-use dart_api_dl::{cobject::OwnedCObject, port::SendPort, DartRuntime};
+use dart_api_dl::{cobject::OwnedCObject, ports::SendPort, DartRuntime};
 
-pub use dart_api_dl::port::DartPortId;
+pub use dart_api_dl::ports::DartPortId;
 
 #[derive(Debug, Clone, Copy)]
 #[repr(transparent)]
