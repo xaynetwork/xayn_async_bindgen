@@ -66,8 +66,8 @@ mod tests {
             r#"
             async fn dodo() -> usize { todo!() }
             #[no_mangle]
-            extern "C" fn _async_bindgen_w__dodo(
-                _async_bindgen_dart_port_id: DartPortId,
+            extern "C" fn _async_bindgen_dart_w__dodo(
+                _async_bindgen_dart_port_id: ::async_bindgen::utils::dart::DartPortId,
                 _async_bindgen_dart_completer_id: i64
             ) -> isize {
                 let completer = match ::async_bindgen::utils::dart::PreparedCompleter::new(
@@ -94,15 +94,15 @@ mod tests {
             extern "C" fn _async_bindgen_dart_w__dork(
                 x: i32,
                 y: *const i32,
-                easync_dart_port_id: DartPortId,
-                easync_dart_completer_id: i64
+                _async_bindgen_dart_port_id: ::async_bindgen::utils::dart::DartPortId,
+                _async_bindgen_dart_completer_id: i64
             ) -> isize {
-                let completer = match PreparedCompleter::new(easync_dart_port_id, easync_dart_completer_id) {
+                let completer = match ::async_bindgen::utils::dart::PreparedCompleter::new(_async_bindgen_dart_port_id, _async_bindgen_dart_completer_id) {
                     Ok(c) => c,
                     Err(_) => return -1,
                 };
                 let bound = completer.bind_future(dork(x , y));
-                spawn(bound);
+                ::async_bindgen::utils::dart::spawn(bound);
             }
         "#,
         );
