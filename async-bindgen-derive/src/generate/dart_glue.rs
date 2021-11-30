@@ -18,5 +18,5 @@ pub(crate) fn additional_dart_inputs() -> Vec<FunctionInput> {
 }
 
 pub(crate)fn path_prefix() -> Path {
-    syn::parse_str("::async_bindgen::utils::dart").unwrap_or_abort()
+    syn::parse_str("::async_bindgen::dart").unwrap_or_abort()
 }

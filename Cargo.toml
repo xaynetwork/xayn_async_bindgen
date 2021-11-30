@@ -2,7 +2,7 @@
 members = [
     # "easync-core",
     "async-bindgen",
-    "codegen-rust",
+    "async-bindgen-derive",
     "codegen-dart"
 ]
 resolver = "2"

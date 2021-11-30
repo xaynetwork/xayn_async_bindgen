@@ -19,6 +19,7 @@ impl FunctionInfo {
         &self.name
     }
 
+    #[allow(unused)]//TODO fixme
     pub(crate) fn output(&self) -> Option<&Type> {
         self.output.as_ref()
     }
