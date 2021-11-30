@@ -1,5 +1,5 @@
 macro_rules! __assert_rust_code_eq {
-    ($left:expr, $right:expr) => ({
+    ($left:expr, $right:expr) => {{
         let left = $left;
         let right = $right;
 
@@ -9,7 +9,7 @@ macro_rules! __assert_rust_code_eq {
         if left_syn != right_syn {
             panic!("Code is not AST equal.\nLEFT: {}\nRIGHT: {}", left, right);
         }
-    });
+    }};
 }
 
 pub(crate) use __assert_rust_code_eq as assert_rust_code_eq;

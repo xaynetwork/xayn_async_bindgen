@@ -19,7 +19,7 @@ impl FunctionInfo {
         &self.name
     }
 
-    #[allow(unused)]//TODO fixme
+    #[allow(unused)] //TODO fixme
     pub(crate) fn output(&self) -> Option<&Type> {
         self.output.as_ref()
     }
@@ -29,7 +29,7 @@ impl FunctionInfo {
     }
 
     pub(crate) fn ffi_wrapper_name(&self, lang: Language) -> String {
-        format!("_async_bindgen_{}_w__{}", lang.as_str(), self.name())
+        format!("async_bindgen_{}_w__{}", lang.as_str(), self.name())
     }
 
     pub(crate) fn parse(item: TokenStream) -> Self {
