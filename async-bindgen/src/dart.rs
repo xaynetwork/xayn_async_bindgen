@@ -2,16 +2,23 @@
 //!
 use std::future::Future;
 
-use dart_api_dl::{cobject::OwnedCObject, ports::SendPort, DartRuntime};
+use dart_api_dl::{
+    cobject::{OwnedCObject, TypedData},
+    ports::SendPort,
+    DartRuntime,
+};
 
 pub use dart_api_dl::ports::DartPortId;
 
 pub type CompleterId = i64;
+pub type Handle = i64;
 
 pub struct PreparedCompleter {
     send_port: Option<SendPort>,
     completer_id: CompleterId,
 }
+
+const MAGIC_TAG: i64 = -6504203682518908873;
 
 impl PreparedCompleter {
     pub fn new(port_id: i64, completer_id: i64) -> Result<Self, ()> {
@@ -24,24 +31,35 @@ impl PreparedCompleter {
         })
     }
 
-    pub async fn bind_future<T>(mut self, future: impl Future<Output = T>)
-    where
-        T: Into<OwnedCObject>,
-    {
+    pub unsafe fn extract_result<T>(handle: Handle) -> T {
+        decode_box_pointer(handle)
+    }
+
+    pub fn spawn(self, future: impl Future<Output = ()> + Send + 'static) {
+        spawn(self.bind_future(future))
+    }
+
+    async fn bind_future<T>(mut self, future: impl Future<Output = T>) {
         let output = future.await;
-        let res = OwnedCObject::array(vec![
-            Box::new(self.completer_id.into()),
-            Box::new(output.into()),
-        ]);
-        self.send_result_if_not_already_done(res);
+        let handle = encode_box_pointer(Box::new(output));
+        self.send_result_if_not_already_done(Some(handle));
     }
 
     /// Sends the result
     ///
     /// Does nothing if the result was
     /// already send.
-    fn send_result_if_not_already_done(&mut self, res: OwnedCObject) {
+    fn send_result_if_not_already_done(&mut self, handle: Option<Handle>) {
         if let Some(port) = self.send_port.take() {
+            let res = if let Some(handle) = handle {
+                OwnedCObject::typed_data(TypedData::Int64(vec![
+                    MAGIC_TAG,
+                    self.completer_id,
+                    handle,
+                ]))
+            } else {
+                OwnedCObject::string_lossy("future canceled in rust")
+            };
             if let Err(_err) = port.post_cobject(res) {
                 //TODO report to error control port
                 //IF we do so output result and handle
@@ -53,7 +71,7 @@ impl PreparedCompleter {
 
 impl Drop for PreparedCompleter {
     fn drop(&mut self) {
-        self.send_result_if_not_already_done(self.completer_id.into());
+        self.send_result_if_not_already_done(None);
     }
 }
 
@@ -61,10 +79,43 @@ impl Drop for PreparedCompleter {
 ///
 // In the future this should allow different implementations (potentially
 // with a cfg, for now only async-std as it's easier to use).
-pub fn spawn(future: impl Future<Output = ()> + Send + 'static) {
+fn spawn(future: impl Future<Output = ()> + Send + 'static) {
     // noticeable more complex with tokio as:
     // - We need a handle to the runtime, but are not in the runtime
     //  - So we need to store the handle in some global slot and
     //    have a init runtime function.
     async_std::task::spawn(future);
+}
+
+/// Undos what `encode_box_pointer` does.
+///
+/// # Safety
+///
+/// This is only safe if
+///
+/// - the encoded pointer was created by [`encode_box_pointer()`]
+/// - it was not done before
+unsafe extern "C" fn decode_box_pointer<T>(encoded_box_pointer: i64) -> T {
+    // only ok if size ptr <= size usize <= size isize <= size i64
+    let ptr = encoded_box_pointer as isize as usize as *mut T;
+    let boxed = unsafe { Box::from_raw(ptr) };
+    *boxed
+}
+
+fn encode_box_pointer<T>(val: T) -> i64 {
+    // only ok if size ptr <= size usize <= size isize <= size i64
+    // for now this is guaranteed on all platforms rust supports,
+    // we also added a test to be sure
+    Box::into_raw(Box::new(val)) as usize as isize as i64
+}
+
+#[cfg(test)]
+mod tests {
+    use std::mem::size_of;
+
+    #[test]
+    fn test_usize_u64_and_ptr_size_match() {
+        assert!(size_of::<usize>() >= size_of::<&u8>());
+        assert!(size_of::<i64>() >= size_of::<usize>());
+    }
 }

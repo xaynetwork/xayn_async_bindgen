@@ -15,19 +15,20 @@ extension {{ffi_class}}AsyncExt on {{ffi_class}} {
                 {{type}} {{name}},
             {{/each}}
         ) {
-            final completer = FfiCompleterRegistry.newCompleter();
-            final rcode = {{wrapped_name}}(
+            final setup = FfiCompleterRegistry.newCompleter();
+            final nativeFn = {{wrapped_name}}(
                 {{#each inputs}}
                     {{name}},
                 {{/each}}
-                completer.portId,
-                completer.completerId,
+                setup.portId,
+                setup.completerId,
             );
-            if (rcode != 0) {
+            if (nativeFn.address == 0) {
                 //TODO
                 throw Exception('failed to setup callbacks');
             }
-            return completer.future;
+            setup.extractor = nativeFn.asFunction<{{output}} Function(int)>();
+            return setup.future;
         }
     {{/each}}
 }
@@ -109,31 +110,33 @@ mod tests {
                     ffi.Pointer<int> foo,
                     double bar,
                 ) {
-                    final completer = FfiCompleterRegistry.newCompleter();
-                    final rcode = foobar_func1(
+                    final setup = FfiCompleterRegistry.newCompleter();
+                    final nativeFn = foobar_func1(
                         foo,
                         bar,
-                        completer.portId,
-                        completer.completerId,
+                        setup.portId,
+                        setup.completerId,
                     );
-                    if (rcode != 0) {
+                    if (nativeFn.address == 0) {
                         //TODO
                         throw Exception('failed to setup callbacks');
                     }
-                    return completer.future;
+                    setup.extractor = nativeFn.asFunction<int Function(int)>();
+                    return setup.future;
                 }
                 Future<ffi.Pointer<AStruct>> d1(
                 ) {
-                    final completer = FfiCompleterRegistry.newCompleter();
-                    final rcode = foobar_d1(
-                        completer.portId,
-                        completer.completerId,
+                    final setup = FfiCompleterRegistry.newCompleter();
+                    final nativeFn = foobar_d1(
+                        setup.portId,
+                        setup.completerId,
                     );
-                    if (rcode != 0) {
+                    if (nativeFn.address == 0) {
                         //TODO
                         throw Exception('failed to setup callbacks');
                     }
-                    return completer.future;
+                    setup.extractor = nativeFn.asFunction<ffi.Pointer<AStruct> Function(int)>();
+                    return setup.future;
                 }
             }
         "

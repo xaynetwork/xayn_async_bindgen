@@ -23,3 +23,17 @@ pub(crate) fn additional_dart_inputs() -> Vec<FunctionInput> {
 pub(crate) fn path_prefix() -> Path {
     syn::parse_str("::async_bindgen::dart").unwrap_or_abort()
 }
+
+pub(crate) fn call_name(fn_name: &Ident) -> Ident {
+    Ident::new(
+        &format!("async_bindgen_dart_c__{}", fn_name),
+        fn_name.span(),
+    )
+}
+
+pub(crate) fn ret_name(fn_name: &Ident) -> Ident {
+    Ident::new(
+        &format!("async_bindgen_dart_r__{}", fn_name),
+        fn_name.span(),
+    )
+}

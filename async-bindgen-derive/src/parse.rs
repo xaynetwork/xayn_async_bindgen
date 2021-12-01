@@ -2,15 +2,12 @@ use proc_macro2::TokenStream;
 use proc_macro_error::ResultExt;
 use syn::{FnArg, Ident, Item, Signature, Type};
 
-use crate::{
-    error::{abort, emit_error},
-    Language,
-};
+use crate::error::{abort, emit_error};
 
 /// Simplified version of `syn::Signature`.
 pub(crate) struct FunctionInfo {
     name: Ident,
-    output: Option<Type>,
+    output: Type,
     inputs: Vec<FunctionInput>,
 }
 
@@ -19,17 +16,12 @@ impl FunctionInfo {
         &self.name
     }
 
-    #[allow(unused)] //TODO fixme
-    pub(crate) fn output(&self) -> Option<&Type> {
-        self.output.as_ref()
+    pub(crate) fn output(&self) -> &Type {
+        &self.output
     }
 
     pub(crate) fn inputs(&self) -> &[FunctionInput] {
         &self.inputs
-    }
-
-    pub(crate) fn ffi_wrapper_name(&self, lang: Language) -> String {
-        format!("async_bindgen_{}_w__{}", lang.as_str(), self.name())
     }
 
     pub(crate) fn parse(item: TokenStream) -> Self {
@@ -73,6 +65,8 @@ impl FunctionInfo {
                 }
             })
             .collect::<Vec<_>>();
+
+        let output = output.unwrap_or_else(|| syn::parse_quote!(()));
 
         FunctionInfo {
             name,
