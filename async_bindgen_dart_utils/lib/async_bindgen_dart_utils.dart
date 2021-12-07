@@ -5,6 +5,7 @@ library easync_dart_io_utils;
 
 import 'dart:async' show Completer, Future;
 import 'dart:ffi';
+import 'dart:developer' show log;
 
 import 'dart:isolate' show ReceivePort;
 
@@ -17,9 +18,9 @@ class FfiCompleterRegistry {
 
   FfiCompleterRegistry._();
 
-  static FfiSetup newCompleter<T>() {
+  static FfiSetup<T> newCompleter<T>() {
     final completerId = _nextId();
-    final ffiCompleter = _FfiCompleterImpl(
+    final ffiCompleter = _FfiCompleterImpl<T>(
       completer: Completer(),
       portId: _port.sendPort.nativePort,
       completerId: completerId,
@@ -34,12 +35,12 @@ class FfiCompleterRegistry {
   }
 
   static ReceivePort _setup() {
-    final port = ReceivePort("ffiCompleter");
+    final port = ReceivePort('ffiCompleter');
     _startHandlingCompletions(port);
     return port;
   }
 
-  static void _startHandlingCompletions(ReceivePort port) async {
+  static Future<void> _startHandlingCompletions(ReceivePort port) async {
     await for (final msg in port) {
       try {
         _handleMessage(msg);
@@ -53,18 +54,21 @@ class FfiCompleterRegistry {
     if (msg is List && msg[0] == _magicTag && msg.length >= 3) {
       assert(msg[1] is int);
       final completer = _takeCompleter(msg[1] as int);
-      final result = msg[2];
+      final dynamic result = msg[2];
       if (result is int) {
         completer.complete(result);
       } else if (result is String) {
         completer.completeError(FutureCanceled(result));
       } else {
         completer.completeError(
-            FutureCanceled('unexpected result msg ${msg.toString()}'));
+          FutureCanceled('unexpected result msg ${msg.toString()}'),
+        );
       }
+    } else {
+      throw ArgumentError(
+        'expected well formed async bindgen response, got: ${msg.toString()}',
+      );
     }
-    throw ArgumentError(
-        'expected well formed async bindgen response, got: ${msg.toString()}');
   }
 
   static _FfiCompleter _takeCompleter(int id) {

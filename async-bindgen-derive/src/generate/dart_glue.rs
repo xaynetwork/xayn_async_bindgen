@@ -1,11 +1,7 @@
 use proc_macro2::Span;
-use proc_macro_error::ResultExt;
 use syn::{Ident, Path};
 
-use crate::{
-    parse::FunctionInput,
-    utils::{type_from_name, type_from_path_and_name},
-};
+use crate::{utils::{type_from_name, type_from_path_and_name}, parse::function::FunctionInput};
 
 pub(crate) fn additional_dart_inputs() -> Vec<FunctionInput> {
     vec![
@@ -21,19 +17,19 @@ pub(crate) fn additional_dart_inputs() -> Vec<FunctionInput> {
 }
 
 pub(crate) fn path_prefix() -> Path {
-    syn::parse_str("::async_bindgen::dart").unwrap_or_abort()
+    syn::parse_str("::async_bindgen::dart").unwrap()
 }
 
-pub(crate) fn call_name(fn_name: &Ident) -> Ident {
+pub(crate) fn call_name(api_name: &Ident, fn_name: &Ident) -> Ident {
     Ident::new(
-        &format!("async_bindgen_dart_c__{}", fn_name),
+        &format!("async_bindgen_dart_c__{}__{}", api_name, fn_name),
         fn_name.span(),
     )
 }
 
-pub(crate) fn ret_name(fn_name: &Ident) -> Ident {
+pub(crate) fn ret_name(api_name: &Ident, fn_name: &Ident) -> Ident {
     Ident::new(
-        &format!("async_bindgen_dart_r__{}", fn_name),
+        &format!("async_bindgen_dart_r__{}__{}", api_name, fn_name),
         fn_name.span(),
     )
 }

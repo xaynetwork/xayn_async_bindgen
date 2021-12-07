@@ -1,2 +1,2 @@
-pub use async_bindgen_derive::async_bindgen;
+pub use async_bindgen_derive::*;
 pub mod dart;

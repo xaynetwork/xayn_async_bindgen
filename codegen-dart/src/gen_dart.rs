@@ -5,9 +5,11 @@ use handlebars::Handlebars;
 use once_cell::sync::Lazy;
 use serde::Serialize;
 
-use super::parse_genesis::DartFunctionSignature;
+use super::parse_genesis::AsyncFunctionSignature;
 
 static DART_SKELETON_TMPL_STR: &str = r#"
+import 'package:async_bindgen_dart_utils/async_bindgen_dart_utils.dart';
+
 extension {{ffi_class}}AsyncExt on {{ffi_class}} {
     {{#each functions}}
         Future<{{output}}> {{name}}(
@@ -16,18 +18,18 @@ extension {{ffi_class}}AsyncExt on {{ffi_class}} {
             {{/each}}
         ) {
             final setup = FfiCompleterRegistry.newCompleter();
-            final nativeFn = {{wrapped_name}}(
+            final call_ok = {{ffi_call_name}}(
                 {{#each inputs}}
                     {{name}},
                 {{/each}}
                 setup.portId,
                 setup.completerId,
             );
-            if (nativeFn.address == 0) {
+            if (call_ok == 0) {
                 //TODO
                 throw Exception('failed to setup callbacks');
             }
-            setup.extractor = nativeFn.asFunction<{{output}} Function(int)>();
+            setup.extractor = {{ffi_ret_name}};
             return setup.future;
         }
     {{/each}}
@@ -43,10 +45,9 @@ static DART_SKELETON_TMPL: Lazy<Handlebars> = Lazy::new(|| {
     reg
 });
 
-#[allow(dead_code)]
 pub(crate) fn generate(
     ffi_class: &str,
-    functions: &[DartFunctionSignature],
+    functions: &[AsyncFunctionSignature],
     out: impl Write,
 ) -> Result<(), Error> {
     DART_SKELETON_TMPL.render_to_write(
@@ -63,7 +64,7 @@ pub(crate) fn generate(
 #[derive(Serialize)]
 struct Context<'a> {
     ffi_class: &'a str,
-    functions: &'a [DartFunctionSignature],
+    functions: &'a [AsyncFunctionSignature],
 }
 
 #[cfg(test)]
@@ -75,10 +76,11 @@ mod tests {
     #[test]
     fn test_rendering_template_works() {
         let functions = &[
-            DartFunctionSignature {
+            AsyncFunctionSignature {
                 doc: vec![],
                 name: "func1".into(),
-                wrapped_name: "foobar_func1".into(),
+                ffi_call_name: "c_foobar_func1".into(),
+                ffi_ret_name: "r_foobar_func1".into(),
                 output: "int".into(),
                 inputs: vec![
                     DartFunctionInputs {
@@ -91,10 +93,11 @@ mod tests {
                     },
                 ],
             },
-            DartFunctionSignature {
+            AsyncFunctionSignature {
                 doc: vec![],
                 name: "d1".into(),
-                wrapped_name: "foobar_d1".into(),
+                ffi_call_name: "foobar_d1c".into(),
+                ffi_ret_name: "foobar_d1r".into(),
                 output: "ffi.Pointer<AStruct>".into(),
                 inputs: vec![],
             },
@@ -105,37 +108,39 @@ mod tests {
         assert_trimmed_line_eq!(
             out,
             "
+            import 'package:async_bindgen_dart_utils/async_bindgen_dart_utils.dart';
+
             extension DodoFfiAsyncExt on DodoFfi {
                 Future<int> func1(
                     ffi.Pointer<int> foo,
                     double bar,
                 ) {
                     final setup = FfiCompleterRegistry.newCompleter();
-                    final nativeFn = foobar_func1(
+                    final call_ok = c_foobar_func1(
                         foo,
                         bar,
                         setup.portId,
                         setup.completerId,
                     );
-                    if (nativeFn.address == 0) {
+                    if (call_ok == 0) {
                         //TODO
                         throw Exception('failed to setup callbacks');
                     }
-                    setup.extractor = nativeFn.asFunction<int Function(int)>();
+                    setup.extractor = r_foobar_func1;
                     return setup.future;
                 }
                 Future<ffi.Pointer<AStruct>> d1(
                 ) {
                     final setup = FfiCompleterRegistry.newCompleter();
-                    final nativeFn = foobar_d1(
+                    final call_ok = foobar_d1c(
                         setup.portId,
                         setup.completerId,
                     );
-                    if (nativeFn.address == 0) {
+                    if (call_ok == 0) {
                         //TODO
                         throw Exception('failed to setup callbacks');
                     }
-                    setup.extractor = nativeFn.asFunction<ffi.Pointer<AStruct> Function(int)>();
+                    setup.extractor = foobar_d1r;
                     return setup.future;
                 }
             }
