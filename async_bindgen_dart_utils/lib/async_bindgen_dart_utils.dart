@@ -18,12 +18,15 @@ class FfiCompleterRegistry {
 
   FfiCompleterRegistry._();
 
-  static FfiSetup<T> newCompleter<T>() {
+  static FfiSetup<T> newCompleter<T>({
+    required T Function(int) extractor,
+  }) {
     final completerId = _nextId();
     final ffiCompleter = _FfiCompleterImpl<T>(
       completer: Completer(),
       portId: _port.sendPort.nativePort,
       completerId: completerId,
+      extractor: extractor,
     );
     _registry[completerId] = ffiCompleter;
     return ffiCompleter;
@@ -95,14 +98,12 @@ abstract class _FfiCompleter {
 }
 
 abstract class FfiSetup<T> {
-  set extractor(T Function(int)? extractor);
   int get portId;
   int get completerId;
   Future<T> get future;
 }
 
 class _FfiCompleterImpl<T> implements _FfiCompleter, FfiSetup<T> {
-  bool extractorNotSet = true;
   T Function(int)? _extractor;
   final Completer<T> _completer;
   final int _portId;
@@ -112,23 +113,16 @@ class _FfiCompleterImpl<T> implements _FfiCompleter, FfiSetup<T> {
     required Completer<T> completer,
     required int portId,
     required int completerId,
+    required T Function(int) extractor,
   })  : _completer = completer,
         _portId = portId,
-        _completerId = completerId;
+        _completerId = completerId,
+        _extractor = extractor;
 
   @override
   int get portId => _portId;
   @override
   int get completerId => _completerId;
-  @override
-  set extractor(T Function(int)? extractor) {
-    if (extractorNotSet) {
-      extractorNotSet = false;
-      _extractor = extractor;
-    } else {
-      throw StateError('extractor already set');
-    }
-  }
 
   @override
   Future<T> get future => _completer.future;
@@ -141,7 +135,7 @@ class _FfiCompleterImpl<T> implements _FfiCompleter, FfiSetup<T> {
     // not called twice.
     _extractor = null;
     if (extractor == null) {
-      throw StateError('extractor is null: extractorNotSet=$extractorNotSet');
+      throw StateError('extractor was already used');
     }
     final val = extractor(handle);
     _completer.complete(val);

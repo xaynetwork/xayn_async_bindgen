@@ -18,6 +18,9 @@ pub struct PreparedCompleter {
     completer_id: CompleterId,
 }
 
+/// Magic tag acting as a fail safe,
+///
+/// was randomly set to a number not representable as `f64`.
 const MAGIC_TAG: i64 = -6504203682518908873;
 
 impl PreparedCompleter {
@@ -41,7 +44,7 @@ impl PreparedCompleter {
 
     async fn bind_future<T>(mut self, future: impl Future<Output = T>) {
         let output = future.await;
-        let handle = encode_box_pointer(Box::new(output));
+        let handle = encode_box_pointer(output);
         self.send_result_if_not_already_done(Some(handle));
     }
 
@@ -58,7 +61,11 @@ impl PreparedCompleter {
                     handle,
                 ]))
             } else {
-                OwnedCObject::string_lossy("future canceled in rust")
+                OwnedCObject::array(vec![
+                    Box::new(OwnedCObject::int64(MAGIC_TAG)),
+                    Box::new(OwnedCObject::int64(self.completer_id,)),
+                    Box::new(OwnedCObject::string_lossy("future canceled in rust")),
+                ])
             };
             if let Err(_err) = port.post_cobject(res) {
                 //TODO report to error control port
