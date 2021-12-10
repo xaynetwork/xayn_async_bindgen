@@ -48,6 +48,12 @@ impl FunctionInfo {
                                 "patterns in function arguments are not supported by async bindgen",
                             )),
                         };
+                        if name.to_string().starts_with("async_bindgen_") {
+                            return Err(Error::new(
+                                name.span(),
+                                "the async_bindgen_ prefix must not be used for arguments",
+                            ));
+                        }
                         let r#type = (*arg.ty).clone();
                         Ok(FunctionInput { name, r#type })
                     }

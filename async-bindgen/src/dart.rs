@@ -63,7 +63,7 @@ impl PreparedCompleter {
             } else {
                 OwnedCObject::array(vec![
                     Box::new(OwnedCObject::int64(MAGIC_TAG)),
-                    Box::new(OwnedCObject::int64(self.completer_id,)),
+                    Box::new(OwnedCObject::int64(self.completer_id)),
                     Box::new(OwnedCObject::string_lossy("future canceled in rust")),
                 ])
             };
@@ -103,8 +103,8 @@ fn spawn(future: impl Future<Output = ()> + Send + 'static) {
 /// - the encoded pointer was created by [`encode_box_pointer()`]
 /// - it was not done before
 unsafe extern "C" fn decode_box_pointer<T>(encoded_box_pointer: i64) -> T {
-    #![allow(unused_unsafe)]//TODO
-    // only ok if size ptr <= size usize <= size isize <= size i64
+    #![allow(unused_unsafe)] //TODO lints
+                             // only ok if size ptr <= size usize <= size isize <= size i64
     let ptr = encoded_box_pointer as isize as usize as *mut T;
     let boxed = unsafe { Box::from_raw(ptr) };
     *boxed

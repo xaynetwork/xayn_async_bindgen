@@ -1,7 +1,7 @@
 use std::{
     fs::{self, File},
     io::BufWriter,
-    path::PathBuf,
+    path::{Path, PathBuf},
 };
 
 use gen_dart::generate;
@@ -21,17 +21,25 @@ struct Cli {
 
     #[structopt(long)]
     ffi_class: String,
-
-    #[structopt(short, long)]
-    out: PathBuf,
 }
 
 fn main() {
     let cli = Cli::from_args();
-    //TODO better error messages
+    let genesis_ext = path_with_all_extensions_replaced(&cli.genesis, "ext.dart");
+    let rel_path = Path::new(".").join(cli.genesis.file_name().unwrap());
     let file = fs::read_to_string(&cli.genesis).expect("failed to read genesis file");
-    //TODO check ffi class name
-    let functions = AsyncFunctionSignature::sniff_dart_signatures(&file);
-    let out = BufWriter::new(File::create(&cli.out).expect("failed to create/open output file"));
-    generate(&cli.ffi_class, &functions, out).expect("failed to write extension to output file");
+    let module_to_functions = AsyncFunctionSignature::sniff_dart_signatures(&file);
+    let mut out =
+        BufWriter::new(File::create(&genesis_ext).expect("failed to create/open output file"));
+    generate(&rel_path, &cli.ffi_class, &module_to_functions, &mut out)
+        .expect("failed to write extension to output file");
+}
+
+fn path_with_all_extensions_replaced(path: &Path, new_extension: &str) -> PathBuf {
+    let mut path = path.with_extension("");
+    while path.extension().is_some() {
+        path.set_extension("");
+    }
+    path.set_extension(new_extension);
+    path
 }

@@ -12,6 +12,3 @@ include = ["integration-tests-bindings"]
 
 [export]
 include = []
-
-# [parse.expand]
-# crates = ["integration-tests-bindings"]

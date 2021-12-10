@@ -11,6 +11,11 @@ import 'dart:isolate' show ReceivePort;
 
 const int _magicTag = -6504203682518908873;
 
+class CouldNotInitializeDartApiError extends Error {
+  @override
+  String toString() => 'Could not initialize dart api';
+}
+
 class FfiCompleterRegistry {
   static int _idGen = 0;
   static final _registry = <int, _FfiCompleter>{};

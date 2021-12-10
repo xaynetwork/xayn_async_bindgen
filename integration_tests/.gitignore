@@ -6,3 +6,4 @@
 build/
 
 *.ffigen.dart
+*.ext.dart

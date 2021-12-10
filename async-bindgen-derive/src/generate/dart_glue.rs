@@ -1,7 +1,11 @@
-use proc_macro2::Span;
+use proc_macro2::{Span, TokenStream};
+use quote::quote;
 use syn::{Ident, Path};
 
-use crate::{utils::{type_from_name, type_from_path_and_name}, parse::function::FunctionInput};
+use crate::{
+    parse::function::FunctionInput,
+    utils::{type_from_name, type_from_path_and_name},
+};
 
 pub(crate) fn additional_dart_inputs() -> Vec<FunctionInput> {
     vec![
@@ -32,4 +36,19 @@ pub(crate) fn ret_name(api_name: &Ident, fn_name: &Ident) -> Ident {
         &format!("async_bindgen_dart_r__{}__{}", api_name, fn_name),
         fn_name.span(),
     )
+}
+
+pub(crate) fn generate_dart_api_init(api_name: &Ident) -> TokenStream {
+    let init_name = Ident::new(
+        &format!("async_bindgen_dart_init_api__{}", api_name),
+        api_name.span(),
+    );
+
+    quote! {
+        #[no_mangle]
+        pub unsafe extern "C" fn #init_name(init_data: *mut ::std::ffi::c_void) -> u8 {
+            //safe to call multiple times from multiple threads
+            ::dart_api_dl::initialize_dart_api_dl(init_data).is_ok() as u8
+        }
+    }
 }

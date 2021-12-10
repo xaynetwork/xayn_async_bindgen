@@ -7,8 +7,9 @@ use crate::{
     Language,
 };
 
-mod dart_glue;
+use self::dart_glue::generate_dart_api_init;
 
+mod dart_glue;
 
 pub(crate) fn generate_type(api: &Api) -> TokenStream {
     let type_name = api.type_name();
@@ -28,11 +29,16 @@ pub(crate) fn generate_type_import(api: &Api) -> TokenStream {
 pub(crate) fn generate_extern_functions(api: &Api, lang: Language) -> TokenStream {
     api.functions()
         .iter()
-        .fold(TokenStream::new(), |mut res, func| {
-            let func = generate_extern_function(api, func, lang);
-            res.extend(func);
+        .fold(generate_api_init_functions(api, lang), |mut res, func| {
+            res.extend(generate_extern_function(api, func, lang));
             res
         })
+}
+
+fn generate_api_init_functions(api: &Api, lang: Language) -> TokenStream {
+    match lang {
+        Language::Dart => generate_dart_api_init(api.mod_name()),
+    }
 }
 
 fn generate_extern_function(api: &Api, func: &FunctionInfo, lang: Language) -> TokenStream {

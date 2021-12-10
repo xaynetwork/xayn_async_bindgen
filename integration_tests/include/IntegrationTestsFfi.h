@@ -7,7 +7,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-bool init_dart_api_dl(void *native_ptr);
+uint8_t async_bindgen_dart_init_api__async_api(void *init_data);
 
 uint8_t async_bindgen_dart_c__async_api__add(uint8_t x,
                                              uint8_t y,
@@ -15,3 +15,17 @@ uint8_t async_bindgen_dart_c__async_api__add(uint8_t x,
                                              int64_t async_bindgen_dart_completer_id);
 
 uint8_t async_bindgen_dart_r__async_api__add(int64_t handle);
+
+uint8_t async_bindgen_dart_c__async_api__sub(uint8_t x,
+                                             uint8_t y,
+                                             DartPortId async_bindgen_dart_port_id,
+                                             int64_t async_bindgen_dart_completer_id);
+
+uint8_t async_bindgen_dart_r__async_api__sub(int64_t handle);
+
+uint8_t async_bindgen_dart_init_api__api2(void *init_data);
+
+uint8_t async_bindgen_dart_c__api2__get_the_byte(DartPortId async_bindgen_dart_port_id,
+                                                 int64_t async_bindgen_dart_completer_id);
+
+uint8_t async_bindgen_dart_r__api2__get_the_byte(int64_t handle);

@@ -5,7 +5,6 @@ use std::{
 
 use proc_macro::TokenStream as TokenStream1;
 use proc_macro2::{Span, TokenStream as TokenStream2};
-use quote::quote;
 use syn::Error;
 
 use crate::{

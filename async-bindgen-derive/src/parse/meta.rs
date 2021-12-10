@@ -9,10 +9,8 @@ use syn::{
 
 pub(crate) struct ApiMeta {
     // in the future we likely will have more options,
-    // like e.g. spawner
-
+// like e.g. spawner
 }
-
 
 impl Parse for ApiMeta {
     fn parse(input: ParseStream) -> Result<Self, Error> {
@@ -49,10 +47,10 @@ impl TryFrom<MetaNVList> for ApiMeta {
             //     let name = expect_string_lit(&nv.lit)?;
             //     name_slot = Some(name.to_snake_case());
             // } else {
-                return Err(Error::new(
-                    nv.span(),
-                    "unsupported async bindgen API option",
-                ));
+            return Err(Error::new(
+                nv.span(),
+                "unsupported async bindgen API option",
+            ));
             // }
         }
         Ok(Self {
