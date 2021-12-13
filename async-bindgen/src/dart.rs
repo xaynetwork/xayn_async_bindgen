@@ -6,10 +6,22 @@ use std::future::Future;
 use xayn_dart_api_dl::{
     cobject::{OwnedCObject, TypedData},
     ports::SendPort,
-    DartRuntime,
+    DartRuntime, InitData,
 };
 
 use thiserror::Error;
+pub use xayn_dart_api_dl::ports::DartPortId;
+
+/// Forwards to [`xayn_dart_api_dl::initialize_dart_api_dl()`].
+///
+/// Returns `0` if it failed, returns `1` if it succeeded.
+///
+/// # Safety
+///
+/// Exact same constraints as the function we forward to.
+pub unsafe fn initialize_dart_api_dl(init_data: InitData) -> u8 {
+    unsafe { xayn_dart_api_dl::initialize_dart_api_dl(init_data).is_ok() as u8 }
+}
 
 pub use xayn_dart_api_dl::{initialize_dart_api_dl, ports::DartPortId};
 
