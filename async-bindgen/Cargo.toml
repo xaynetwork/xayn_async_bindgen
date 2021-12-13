@@ -9,3 +9,4 @@ dart-api-dl = "0.3.0"
 async-std = "1.10.0"
 async-bindgen-derive = { path="../async-bindgen-derive" }
 static_assertions = "1.1.0"
+thiserror = "1.0.30"

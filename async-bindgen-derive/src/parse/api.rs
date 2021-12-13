@@ -4,7 +4,7 @@ use syn::{
     parse::Error, spanned::Spanned, ImplItem, ItemImpl, Path, PathArguments, Type, Visibility,
 };
 
-use super::{function::FunctionInfo, meta::ApiMeta};
+use super::function::FunctionInfo;
 
 pub(crate) struct Api {
     type_name: Ident,
@@ -14,13 +14,18 @@ pub(crate) struct Api {
 
 impl Api {
     pub(crate) fn parse(attrs: TokenStream, impl_block: TokenStream) -> Result<Self, Error> {
-        let meta = syn::parse2::<ApiMeta>(attrs)?;
+        if !attrs.is_empty() {
+            return Err(Error::new_spanned(
+                attrs,
+                "async_bindgen::api currently doesn't support arguments",
+            ));
+        }
         let (type_name, functions) = parse_impl_block(impl_block)?;
         let mod_name = Ident::new(&type_name.to_string().to_snake_case(), type_name.span());
         Ok(Self {
-            functions,
             type_name,
             mod_name,
+            functions,
         })
     }
 
@@ -89,5 +94,5 @@ fn expect_single_seg_path(path: &Path) -> Result<Ident, Error> {
             return Ok(seg.ident.clone());
         }
     }
-    return Err(Error::new(path.span(), "expected single ident path"));
+    Err(Error::new(path.span(), "expected single ident path"))
 }

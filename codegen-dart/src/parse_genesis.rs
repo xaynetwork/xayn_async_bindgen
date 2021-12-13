@@ -110,7 +110,7 @@ impl DartFunctionSignature {
     fn from_captures(captures: &Captures) -> Self {
         //UNWRAP_SAFE: capture group is not optional
         let name = captures.name("func_name").unwrap().as_str().trim().into();
-        let doc = get_doc_from_captures(&captures);
+        let doc = get_doc_from_captures(captures);
         //UNWRAP_SAFE: capture group is not optional
         let output = captures.name("output").unwrap().as_str().trim().to_owned();
         let inputs = get_inputs_from_captures(captures);

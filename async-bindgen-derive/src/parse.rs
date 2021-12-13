@@ -1,3 +1,2 @@
-pub mod api;
-pub mod function;
-pub mod meta;
+pub(crate) mod api;
+pub(crate) mod function;

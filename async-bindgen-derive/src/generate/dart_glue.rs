@@ -45,10 +45,19 @@ pub(crate) fn generate_dart_api_init(api_name: &Ident) -> TokenStream {
     );
 
     quote! {
+        /// Initializes the dart api.
+        ///
+        /// Is safe to be called multiple times and form multiple
+        /// thread.
+        ///
+        /// # Safety
+        ///
+        /// Must be called with a pointer produced by dart using
+        /// `NativeApi.initializeApiDLData`.
         #[no_mangle]
         pub unsafe extern "C" fn #init_name(init_data: *mut ::std::ffi::c_void) -> u8 {
-            //safe to call multiple times from multiple threads
-            ::dart_api_dl::initialize_dart_api_dl(init_data).is_ok() as u8
+            let res = unsafe { ::dart_api_dl::initialize_dart_api_dl(init_data) };
+            res.is_ok() as u8
         }
     }
 }

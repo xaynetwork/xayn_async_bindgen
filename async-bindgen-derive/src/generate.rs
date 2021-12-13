@@ -2,7 +2,10 @@ use proc_macro2::TokenStream;
 use quote::quote;
 
 use crate::{
-    parse::{api::Api, function::FunctionInfo},
+    parse::{
+        api::Api,
+        function::{FunctionInfo, FunctionInput},
+    },
     utils::type_from_path_and_name,
     Language,
 };
@@ -58,20 +61,21 @@ fn generate_extern_function(api: &Api, func: &FunctionInfo, lang: Language) -> T
         .inputs()
         .iter()
         .chain(add_inputs.iter())
-        .map(|inp| inp.name());
+        .map(FunctionInput::name);
     let wrapper_function_arg_types = func
         .inputs()
         .iter()
         .chain(add_inputs.iter())
-        .map(|inp| inp.r#type());
+        .map(FunctionInput::r#type);
 
-    let completer_args = add_inputs.iter().map(|inp| inp.name());
-    let async_call_args = func.inputs().iter().map(|inp| inp.name());
+    let completer_args = add_inputs.iter().map(FunctionInput::name);
+    let async_call_args = func.inputs().iter().map(FunctionInput::name);
 
-    let completer = type_from_path_and_name(path_prefix.clone(), "PreparedCompleter");
+    let completer = type_from_path_and_name(path_prefix, "PreparedCompleter");
     let output = func.output();
 
     quote! {
+        /// Wrapper for initiating the call to an async function.
         #[no_mangle]
         pub extern "C" fn #call_name(#(#wrapper_function_arg_names: #wrapper_function_arg_types),*)
         -> u8 {
@@ -84,6 +88,11 @@ fn generate_extern_function(api: &Api, func: &FunctionInfo, lang: Language) -> T
             }
         }
 
+        /// Extern "C"  wrapper delegating to `PreparedCompleter::extract_result()`.
+        ///
+        /// # Safety
+        ///
+        /// See the language specific version of `PreparedCompleter::extract_result()`.
         #[no_mangle]
         pub unsafe extern "C" fn #ret_name(handle: i64) -> #output {
             unsafe { #completer::extract_result(handle) }
