@@ -16,4 +16,6 @@
     clippy::module_name_repetitions
 )]
 
+pub use async_bindgen_derive::api;
+
 pub mod dart;

@@ -16,15 +16,12 @@
     clippy::module_name_repetitions
 )]
 
-// #[rustfmt::skip]
+#[rustfmt::skip]
 pub mod async_api;
-// #[rustfmt::skip]
+#[rustfmt::skip]
 pub mod api2;
 
-// this normally is included in the proc macro expansion
-use crate::async_api::AsyncApi;
-
-// #[async_bindgen::api]
+#[async_bindgen::api]
 impl AsyncApi {
     /// Adds two bytes.
     pub async fn add(x: u8, y: u8) -> u8 {
@@ -37,10 +34,7 @@ impl AsyncApi {
     }
 }
 
-// this normally is included in the proc macro expansion
-use crate::api2::Api2;
-
-// #[async_bindgen::api]
+#[async_bindgen::api]
 impl Api2 {
     /// Returns 12.
     pub async fn get_the_byte() -> u8 {
