@@ -4,11 +4,12 @@
 library easync_dart_io_utils;
 
 import 'dart:async' show Completer, Future;
-import 'dart:ffi';
-import 'dart:developer' show log;
-
+import 'dart:ffi' show NativePort;
 import 'dart:isolate' show ReceivePort;
 
+/// Magic tag send as additional failsafe, intentional set to be not properly
+/// represented in JS.
+// ignore:  avoid_js_rounded_ints
 const int _magicTag = -6504203682518908873;
 
 class CouldNotInitializeDartApiError extends Error {
