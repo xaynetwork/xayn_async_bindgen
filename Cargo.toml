@@ -1,6 +1,8 @@
 [workspace]
 members = [
     "async-bindgen",
+    "async-bindgen-derive",
+    "async-bindgen-gen-dart",
     "integration-tests-bindings"
 ]
 resolver = "2"

@@ -20,7 +20,7 @@ permissions:
 env:
   CARGO_NET_GIT_FETCH_WITH_CLI: true
   DART_VERSION: '2.14.4'
-  DART_WORKSPACE: ${{ github.workspace }}/integration_tests
+  DART_TEST_WORKSPACE: ${{ github.workspace }}/integration_tests
   RUST_WORKSPACE: ${{ github.workspace }}/
 
 jobs:
@@ -44,7 +44,7 @@ jobs:
           sdk: ${{ env.DART_VERSION }}
 
       - name: Check formatting
-        working-directory: ${{ env.DART_WORKSPACE }}
+        working-directory: ${{ env.DART_TEST_WORKSPACE }}
         run: dart format --output=none --set-exit-if-changed .
 
   integration-tests:
@@ -74,7 +74,7 @@ jobs:
           sdk: ${{ env.DART_VERSION }}
 
       - name: Install Dart dependencies
-        working-directory: ${{ env.DART_WORKSPACE }}
+        working-directory: ${{ env.DART_TEST_WORKSPACE }}
         run: dart pub get
 
       - name: Install clang for ffigen
@@ -90,15 +90,20 @@ jobs:
         run: |
           cargo test -p integration-tests-bindings
 
+      - name: Generate dart code
+        working-directory: ${{ env.RUST_WORKSPACE }}
+        run: |
+          cargo run -p async-bindgen-gen-dart -- --ffi-class IntegrationTestsFfi --genesis ${DART_TEST_WORKSPACE}/lib/src/genesis.ffigen.dart
+
       - name: Analyze code
-        working-directory: ${{ env.DART_WORKSPACE }}
+        working-directory: ${{ env.DART_TEST_WORKSPACE }}
         # We want to analyze code referring to `.ffigen.dart` files
         # which we only generate through rust because it's based
         # on macro generated code from rust.
         run: dart analyze --fatal-infos
 
       - name: Run tests
-        working-directory: ${{ env.DART_WORKSPACE }}
+        working-directory: ${{ env.DART_TEST_WORKSPACE }}
         run: dart test
 
   # this is an helper that needs all the real leafs of the workflow.
