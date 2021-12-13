@@ -5,7 +5,7 @@ edition = "2021"
 
 
 [dependencies]
-dart-api-dl = "0.3.0"
+xayn-dart-api-dl = "0.3.0"
 async-std = "1.10.0"
 static_assertions = "1.1.0"
 thiserror = "1.0.30"

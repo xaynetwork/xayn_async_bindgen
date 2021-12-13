@@ -14,7 +14,7 @@ pub struct Api2;
 pub unsafe extern "C" fn async_bindgen_dart_init_api__api2(
     init_data: *mut ::std::ffi::c_void,
 ) -> u8 {
-    let res = unsafe { ::dart_api_dl::initialize_dart_api_dl(init_data) };
+    let res = unsafe { ::async_bindgen::dart::initialize_dart_api_dl(init_data) };
     res.is_ok() as u8
 }
 

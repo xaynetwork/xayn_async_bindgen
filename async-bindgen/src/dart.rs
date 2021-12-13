@@ -3,13 +3,16 @@
 
 use std::future::Future;
 
-use dart_api_dl::{
+use xayn_dart_api_dl::{
     cobject::{OwnedCObject, TypedData},
     ports::SendPort,
     DartRuntime,
 };
 
-pub use dart_api_dl::ports::DartPortId;
+pub use xayn_dart_api_dl::{
+    ports::DartPortId,
+    initialize_dart_api_dl
+};
 use thiserror::Error;
 
 /// A id indicating which future will be completed.

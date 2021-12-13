@@ -12,10 +12,10 @@ msrv = "1.55.0"
 [patch.crates-io.async-bindgen]
 path = "./async-bindgen"
 
-[patch.crates-io.dart-api-dl]
+[patch.crates-io.xayn-dart-api-dl]
 git="ssh://git@github.com/xaynetwork/xayn_dart_api_dl.git"
 branch="TY-2221-2-bindings-for-dart-api-dl-h"
 
-[patch.crates-io.dart-api-dl-sys]
+[patch.crates-io.xayn-dart-api-dl-sys]
 git="ssh://git@github.com/xaynetwork/xayn_dart_api_dl.git"
 branch="TY-2221-2-bindings-for-dart-api-dl-h"
