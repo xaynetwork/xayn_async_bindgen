@@ -9,11 +9,9 @@ use xayn_dart_api_dl::{
     DartRuntime,
 };
 
-pub use xayn_dart_api_dl::{
-    ports::DartPortId,
-    initialize_dart_api_dl
-};
 use thiserror::Error;
+
+pub use xayn_dart_api_dl::{initialize_dart_api_dl, ports::DartPortId};
 
 /// A id indicating which future will be completed.
 pub type CompleterId = i64;
