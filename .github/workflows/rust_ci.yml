@@ -27,6 +27,12 @@ jobs:
     steps:
       - uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579 # v2.4.0
 
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS }}
+
       - name: Install rust toolchain
         working-directory: ${{ env.RUST_WORKSPACE }}
         run: rustup toolchain install ${{ env.RUST_NIGHTLY }} --component rustfmt
@@ -43,6 +49,12 @@ jobs:
     steps:
       - uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579 # v2.4.0
 
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS }}
+
       - name: Install rust toolchain
         working-directory: ${{ env.RUST_WORKSPACE }}
         run: rustup show
@@ -58,6 +70,12 @@ jobs:
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579 # v2.4.0
+
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS }}
 
       - name: Install rust toolchain
         working-directory: ${{ env.RUST_WORKSPACE }}
