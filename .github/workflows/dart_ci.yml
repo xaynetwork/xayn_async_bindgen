@@ -134,7 +134,7 @@ jobs:
   ci-ok:
     name: ci-ok
     needs:
-      - integration-tests
+      - dart-doc
     runs-on: ubuntu-20.04
     steps:
       - name: Nothing to do
