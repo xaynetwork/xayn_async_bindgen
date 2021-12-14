@@ -116,82 +116,99 @@ struct ClassContext<'a> {
 
 #[cfg(test)]
 mod tests {
-    // use crate::{parse_genesis::DartFunctionInputs, test_utils::assert_trimmed_line_eq};
+    use crate::{parse_genesis::DartFunctionInputs, test_utils::assert_trimmed_line_eq};
 
-    // use super::*;
+    use super::*;
 
-    // #[test]
-    // fn test_rendering_template_works() {
-    //     let functions = &[
-    //         AsyncFunctionSignature {
-    //             doc: vec![],
-    //             name: "func1".into(),
-    //             ffi_call_name: "c_foobar_func1".into(),
-    //             ffi_ret_name: "r_foobar_func1".into(),
-    //             output: "int".into(),
-    //             inputs: vec![
-    //                 DartFunctionInputs {
-    //                     name: "foo".into(),
-    //                     r#type: "ffi.Pointer<int>".into(),
-    //                 },
-    //                 DartFunctionInputs {
-    //                     name: "bar".into(),
-    //                     r#type: "double".into(),
-    //                 },
-    //             ],
-    //         },
-    //         AsyncFunctionSignature {
-    //             doc: vec![],
-    //             name: "d1".into(),
-    //             ffi_call_name: "foobar_d1c".into(),
-    //             ffi_ret_name: "foobar_d1r".into(),
-    //             output: "ffi.Pointer<AStruct>".into(),
-    //             inputs: vec![],
-    //         },
-    //     ];
-    //     let mut out = Vec::<u8>::new();
-    //     generate("DodoFfi", functions, &mut out).unwrap();
-    //     let out = String::from_utf8(out).unwrap();
-    //     assert_trimmed_line_eq!(
-    //         out,
-    //         "
-    //         import 'package:async_bindgen_dart_utils/async_bindgen_dart_utils.dart';
+    #[test]
+    fn test_rendering_template_works() {
+        let mut functions = HashMap::<String, Vec<AsyncFunctionSignature>>::default();
+        functions.insert("foo_bar".to_owned(), vec![
+            AsyncFunctionSignature {
+                doc: vec![],
+                name: "func1".into(),
+                ffi_call_name: "c_foobar_func1".into(),
+                ffi_ret_name: "r_foobar_func1".into(),
+                output: "int".into(),
+                inputs: vec![
+                    DartFunctionInputs {
+                        name: "foo".into(),
+                        r#type: "ffi.Pointer<Dodo>".into(),
+                    },
+                    DartFunctionInputs {
+                        name: "bar".into(),
+                        r#type: "double".into(),
+                    },
+                ],
+            },
+            AsyncFunctionSignature {
+                doc: vec![],
+                name: "d1".into(),
+                ffi_call_name: "foobar_d1c".into(),
+                ffi_ret_name: "foobar_d1r".into(),
+                output: "ffi.Pointer<AStruct>".into(),
+                inputs: vec![],
+            },
+        ]);
+        let mut out = Vec::<u8>::new();
+        generate(Path::new("./buddy.dodo.ffigen.dart"), "XainFfi", &functions, &mut out).unwrap();
+        let out = String::from_utf8(out).unwrap();
+        assert_trimmed_line_eq!(
+            out,
+            "
+            import 'dart:ffi' show NativeApi;
 
-    //         extension DodoFfiAsyncExt on DodoFfi {
-    //             Future<int> func1(
-    //                 ffi.Pointer<int> foo,
-    //                 double bar,
-    //             ) {
-    //                 final setup = FfiCompleterRegistry.newCompleter();
-    //                 final call_ok = c_foobar_func1(
-    //                     foo,
-    //                     bar,
-    //                     setup.portId,
-    //                     setup.completerId,
-    //                 );
-    //                 if (call_ok == 0) {
-    //                     //TODO
-    //                     throw Exception('failed to setup callbacks');
-    //                 }
-    //                 setup.extractor = r_foobar_func1;
-    //                 return setup.future;
-    //             }
-    //             Future<ffi.Pointer<AStruct>> d1(
-    //             ) {
-    //                 final setup = FfiCompleterRegistry.newCompleter();
-    //                 final call_ok = foobar_d1c(
-    //                     setup.portId,
-    //                     setup.completerId,
-    //                 );
-    //                 if (call_ok == 0) {
-    //                     //TODO
-    //                     throw Exception('failed to setup callbacks');
-    //                 }
-    //                 setup.extractor = foobar_d1r;
-    //                 return setup.future;
-    //             }
-    //         }
-    //     "
-    //     );
-    // }
+            import 'package:async_bindgen_dart_utils/async_bindgen_dart_utils.dart'
+                show CouldNotInitializeDartApiError, FfiCompleterRegistry;
+            // ignore: always_use_package_imports
+            import './buddy.dodo.ffigen.dart' show XainFfi;
+
+            class FooBar {
+                final XainFfi _inner;
+
+                FooBar(this._inner) {
+                    final status = _inner.async_bindgen_dart_init_api__foo_bar(NativeApi.initializeApiDLData);
+                    if (status != 1) {
+                        throw CouldNotInitializeDartApiError();
+                    }
+                }
+
+                Future<int> func1(
+                    ffi.Pointer<Dodo> foo,
+                    double bar,
+                ) {
+                    final setup = FfiCompleterRegistry.newCompleter(
+                        extractor: _inner.r_foobar_func1,
+                    );
+                    final callOk = _inner.c_foobar_func1(
+                            foo,
+                            bar,
+                        setup.portId,
+                        setup.completerId,
+                    );
+                    if (callOk == 0) {
+                        //TODO
+                        throw Exception('failed to setup callbacks');
+                    }
+                    return setup.future;
+                }
+                Future<ffi.Pointer<AStruct>> d1(
+                ) {
+                    final setup = FfiCompleterRegistry.newCompleter(
+                        extractor: _inner.foobar_d1r,
+                    );
+                    final callOk = _inner.foobar_d1c(
+                        setup.portId,
+                        setup.completerId,
+                    );
+                    if (callOk == 0) {
+                        //TODO
+                        throw Exception('failed to setup callbacks');
+                    }
+                    return setup.future;
+                }
+            }
+        "
+        );
+    }
 }

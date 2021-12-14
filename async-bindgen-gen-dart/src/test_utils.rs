@@ -12,10 +12,8 @@ macro_rules! __assert_trimmed_line_eq {
     }};
 }
 
-#[allow(unused)] //TODO
 pub(crate) use __assert_trimmed_line_eq as assert_trimmed_line_eq;
 
-#[allow(dead_code)] //TODO
 pub(crate) fn trimmed_non_empty_lines(s: &str) -> impl Iterator<Item = &str> {
     s.lines().flat_map(|line| {
         let line = line.trim();
