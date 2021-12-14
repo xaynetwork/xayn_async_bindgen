@@ -18,6 +18,7 @@ permissions:
   contents: read
 
 env:
+  CARGO_NET_GIT_FETCH_WITH_CLI: true
   DART_VERSION: '2.14.4'
   DART_WORKSPACE: ${{ github.workspace }}/integration_tests
   RUST_WORKSPACE: ${{ github.workspace }}/
