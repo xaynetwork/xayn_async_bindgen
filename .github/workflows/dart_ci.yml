@@ -102,7 +102,7 @@ jobs:
 
   dart-doc:
     name: dart-doc
-    needs: dart-test
+    needs: dart-analyze
     runs-on: ubuntu-20.04
     timeout-minutes: 15
     steps:
@@ -135,6 +135,7 @@ jobs:
     name: ci-ok
     needs:
       - dart-doc
+      - dart-test
     runs-on: ubuntu-20.04
     steps:
       - name: Nothing to do
