@@ -13,7 +13,7 @@ use thiserror::Error;
 
 pub use xayn_dart_api_dl::{initialize_dart_api_dl, ports::DartPortId};
 
-/// A id indicating which future will be completed.
+/// An id indicating which future will be completed.
 pub type CompleterId = i64;
 /// A magic way to pass back results (currently this is a pointer turned into an int).
 pub type Handle = i64;
@@ -60,7 +60,7 @@ impl PreparedCompleter {
     ///
     /// # Safety
     ///
-    /// - This must only be called with a handler id send to the
+    /// - This must only be called with a handler id sent to the
     ///   `FfiCompleterRegistry` which did setup the async call.
     /// - This must only be called once for each handle.
     pub unsafe fn extract_result<T>(handle: Handle) -> T {
@@ -71,8 +71,8 @@ impl PreparedCompleter {
     ///
     /// Once it completes dart is notified about the result.
     ///
-    /// If it gets canceled (dropped without completion) it dart is also
-    /// notified completing the dart future with an error.
+    /// If it gets canceled (dropped without completion) the future corresponding
+    /// to it in dart is completed with an error.
     pub fn spawn<T: 'static>(self, future: impl Future<Output = T> + Send + 'static) {
         spawn(self.bind_future(future));
     }
@@ -85,8 +85,7 @@ impl PreparedCompleter {
 
     /// Sends the result
     ///
-    /// Does nothing if the result was
-    /// already send.
+    /// Does nothing if the result was already sent.
     fn send_result_if_not_already_done(&mut self, handle: Option<Handle>) {
         if let Some(port) = self.send_port.take() {
             let res = if let Some(handle) = handle {
@@ -131,7 +130,7 @@ fn spawn(future: impl Future<Output = ()> + Send + 'static) {
     // noticeable more complex with tokio as:
     // - We need a handle to the runtime, but are not in the runtime
     //  - So we need to store the handle in some global slot and
-    //    have a init runtime function.
+    //    have an init runtime function.
     async_std::task::spawn(future);
 }
 

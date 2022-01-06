@@ -7,8 +7,8 @@ import 'dart:async' show Completer, Future;
 import 'dart:ffi' show NativePort;
 import 'dart:isolate' show ReceivePort;
 
-/// Magic tag send as additional failsafe, intentional set to be not properly
-/// represented in JS.
+/// Magic tag send as additional failsafe, intentionally set to be not
+/// precisely represented in JS.
 // ignore:  avoid_js_rounded_ints
 const int _magicTag = -6504203682518908873;
 
@@ -136,13 +136,13 @@ class _FfiCompleterImpl<T> implements _FfiCompleter, FfiSetup<T> {
   @override
   void complete(int handle) {
     final extractor = _extractor;
+    if (extractor == null) {
+      throw StateError('extractor was already used');
+    }
     // while this method should never be called twice,
     // we still want to make sure the extractor is definitely
     // not called twice.
     _extractor = null;
-    if (extractor == null) {
-      throw StateError('extractor was already used');
-    }
     final val = extractor(handle);
     _completer.complete(val);
   }
