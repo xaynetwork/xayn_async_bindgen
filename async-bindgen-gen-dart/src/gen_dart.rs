@@ -130,7 +130,7 @@ mod tests {
                     doc: vec![],
                     name: "func1".into(),
                     ffi_call_name: "c_foobar_func1".into(),
-                    ffi_ret_name: "r_foobar_func1".into(),
+                    ffi_return_name: "r_foobar_func1".into(),
                     output: "int".into(),
                     inputs: vec![
                         DartFunctionInputs {
@@ -147,7 +147,7 @@ mod tests {
                     doc: vec![],
                     name: "d1".into(),
                     ffi_call_name: "foobar_d1c".into(),
-                    ffi_ret_name: "foobar_d1r".into(),
+                    ffi_return_name: "foobar_d1r".into(),
                     output: "ffi.Pointer<AStruct>".into(),
                     inputs: vec![],
                 },
