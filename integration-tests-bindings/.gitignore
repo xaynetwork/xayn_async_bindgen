@@ -1,2 +1,1 @@
-src/api2.rs
-src/async_api.rs
+src/async_bindings/*.rs

@@ -25,7 +25,7 @@ pub(crate) fn generate_type_import(api: &Api) -> TokenStream {
     let api_name = api.mod_name();
     let api_type_name = api.type_name();
     quote! {
-        use crate::#api_name::#api_type_name;
+        pub use crate::async_bindings::#api_name::#api_type_name;
     }
 }
 

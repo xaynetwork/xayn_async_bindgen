@@ -13,7 +13,9 @@
 #![allow(clippy::must_use_candidate, clippy::items_after_statements)]
 
 use std::{
-    env, fs, io,
+    env,
+    fs::{self, create_dir_all},
+    io,
     path::{Path, PathBuf},
 };
 
@@ -86,14 +88,16 @@ impl AsyncBindgenResult {
     }
 
     pub(crate) fn write_ext_file(&self, crate_root: &Path) -> Result<(), io::Error> {
-        let (file, content) = self.setup_ext_file_writing(crate_root);
+        let (file, content) = self.create_ext_file_output_info(crate_root);
+        create_dir_all(file.parent().unwrap())?;
         fs::write(file, content)?;
         Ok(())
     }
 
-    pub(crate) fn setup_ext_file_writing(&self, crate_root: &Path) -> (PathBuf, String) {
+    pub(crate) fn create_ext_file_output_info(&self, crate_root: &Path) -> (PathBuf, String) {
         let file = crate_root
             .join("src")
+            .join("async_bindings")
             .join(self.api.mod_name().to_string())
             .with_extension("rs");
         let content = self.file_tokens.to_string();
@@ -123,7 +127,7 @@ mod tests {
         let item = syn::parse_str::<TokenStream2>(func).unwrap();
 
         let result = parse_gen_api(attr, item).unwrap();
-        let (_path, content) = result.setup_ext_file_writing(Path::new("/foo/"));
+        let (_path, content) = result.create_ext_file_output_info(Path::new("/foo/"));
         let expansion = result.into_token_stream();
         assert_rust_code_eq!(expansion.to_string(), expected_expanded_code);
         assert_rust_code_eq!(content, expected_file_code);
@@ -142,7 +146,7 @@ mod tests {
                 pub async fn dodo() -> *const u8 { todo!() }
             }
 
-            use crate::bar_foot::BarFoot;
+            pub use crate::async_bindings::bar_foot::BarFoot;
         "#,
             r##"
             #![doc(hidden)]
@@ -205,7 +209,7 @@ mod tests {
                 pub async fn dork(x: i32, y: *const i32) -> isize { todo!() }
             }
 
-            use crate::bar_foot::BarFoot;
+            pub use crate::async_bindings::bar_foot::BarFoot;
         "#,
             r##"
             #![doc(hidden)]
@@ -272,7 +276,7 @@ mod tests {
                 pub async fn dork(x: i32, y: *const i32) -> isize { todo!() }
             }
 
-            use crate::bar_foot::BarFoot;
+            pub use crate::async_bindings::bar_foot::BarFoot;
         "#,
             r##"
             #![doc(hidden)]

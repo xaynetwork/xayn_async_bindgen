@@ -16,10 +16,7 @@
     clippy::module_name_repetitions
 )]
 
-#[rustfmt::skip]
-pub mod async_api;
-#[rustfmt::skip]
-pub mod api2;
+pub mod async_bindings;
 
 #[async_bindgen::api]
 impl AsyncApi {
