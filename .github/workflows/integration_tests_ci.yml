@@ -82,18 +82,15 @@ jobs:
 
       - name: Build Rust
         working-directory: ${{ env.RUST_WORKSPACE }}
-        run: |
-          cargo build -p integration-tests-bindings
+        run: cargo build -p integration-tests-bindings
 
       - name: Unit test of integration test crate
         working-directory: ${{ env.RUST_WORKSPACE }}
-        run: |
-          cargo test -p integration-tests-bindings
+        run: cargo test -p integration-tests-bindings
 
       - name: Generate dart code
         working-directory: ${{ env.RUST_WORKSPACE }}
-        run: |
-          cargo run -p async-bindgen-gen-dart -- --ffi-class IntegrationTestsFfi --genesis ${DART_TEST_WORKSPACE}/lib/src/genesis.ffigen.dart
+        run: cargo run -p async-bindgen-gen-dart -- --ffi-class IntegrationTestsFfi --genesis ${DART_TEST_WORKSPACE}/lib/src/genesis.ffigen.dart
 
       - name: Analyze code
         working-directory: ${{ env.DART_TEST_WORKSPACE }}

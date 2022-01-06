@@ -1,4 +1,4 @@
-set -eu
+set -eux
 cd "$(dirname $0)"
 
 cargo +nightly fmt --all -- --check
