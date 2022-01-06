@@ -160,7 +160,7 @@ mod tests {
             pub unsafe extern "C" fn async_bindgen_dart_init_api__bar_foot(
                 init_data: *mut ::std::ffi::c_void
             ) -> u8 {
-                unsafe { ::async_bindgen::dart::initialize_dart_api_dl(init_data) }
+                unsafe { ::async_bindgen::dart::initialize_dart_api_dl(init_data).is_ok().into() }
             }
             #[doc = r" Wrapper for initiating the call to an async function."]
             #[no_mangle]
@@ -223,7 +223,7 @@ mod tests {
             pub unsafe extern "C" fn async_bindgen_dart_init_api__bar_foot(
                 init_data: *mut ::std::ffi::c_void
             ) -> u8 {
-                unsafe { ::async_bindgen::dart::initialize_dart_api_dl(init_data) }
+                unsafe { ::async_bindgen::dart::initialize_dart_api_dl(init_data).is_ok().into() }
             }
             #[doc = r" Wrapper for initiating the call to an async function."]
             #[no_mangle]
@@ -290,7 +290,7 @@ mod tests {
             pub unsafe extern "C" fn async_bindgen_dart_init_api__bar_foot(
                 init_data: *mut ::std::ffi::c_void
             ) -> u8 {
-                unsafe { ::async_bindgen::dart::initialize_dart_api_dl(init_data) }
+                unsafe { ::async_bindgen::dart::initialize_dart_api_dl(init_data).is_ok().into() }
             }
             #[doc = r" Wrapper for initiating the call to an async function."]
             #[no_mangle]

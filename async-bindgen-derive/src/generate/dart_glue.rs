@@ -56,7 +56,7 @@ pub(crate) fn generate_dart_api_init(api_name: &Ident) -> TokenStream {
         /// `NativeApi.initializeApiDLData`.
         #[no_mangle]
         pub unsafe extern "C" fn #init_name(init_data: *mut ::std::ffi::c_void) -> u8 {
-            unsafe { ::async_bindgen::dart::initialize_dart_api_dl(init_data) }
+            unsafe { ::async_bindgen::dart::initialize_dart_api_dl(init_data).is_ok().into() }
         }
     }
 }

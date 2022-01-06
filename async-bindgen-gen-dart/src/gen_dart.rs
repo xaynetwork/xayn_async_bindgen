@@ -123,35 +123,44 @@ mod tests {
     #[test]
     fn test_rendering_template_works() {
         let mut functions = HashMap::<String, Vec<AsyncFunctionSignature>>::default();
-        functions.insert("foo_bar".to_owned(), vec![
-            AsyncFunctionSignature {
-                doc: vec![],
-                name: "func1".into(),
-                ffi_call_name: "c_foobar_func1".into(),
-                ffi_ret_name: "r_foobar_func1".into(),
-                output: "int".into(),
-                inputs: vec![
-                    DartFunctionInputs {
-                        name: "foo".into(),
-                        r#type: "ffi.Pointer<Dodo>".into(),
-                    },
-                    DartFunctionInputs {
-                        name: "bar".into(),
-                        r#type: "double".into(),
-                    },
-                ],
-            },
-            AsyncFunctionSignature {
-                doc: vec![],
-                name: "d1".into(),
-                ffi_call_name: "foobar_d1c".into(),
-                ffi_ret_name: "foobar_d1r".into(),
-                output: "ffi.Pointer<AStruct>".into(),
-                inputs: vec![],
-            },
-        ]);
+        functions.insert(
+            "foo_bar".to_owned(),
+            vec![
+                AsyncFunctionSignature {
+                    doc: vec![],
+                    name: "func1".into(),
+                    ffi_call_name: "c_foobar_func1".into(),
+                    ffi_ret_name: "r_foobar_func1".into(),
+                    output: "int".into(),
+                    inputs: vec![
+                        DartFunctionInputs {
+                            name: "foo".into(),
+                            r#type: "ffi.Pointer<Dodo>".into(),
+                        },
+                        DartFunctionInputs {
+                            name: "bar".into(),
+                            r#type: "double".into(),
+                        },
+                    ],
+                },
+                AsyncFunctionSignature {
+                    doc: vec![],
+                    name: "d1".into(),
+                    ffi_call_name: "foobar_d1c".into(),
+                    ffi_ret_name: "foobar_d1r".into(),
+                    output: "ffi.Pointer<AStruct>".into(),
+                    inputs: vec![],
+                },
+            ],
+        );
         let mut out = Vec::<u8>::new();
-        generate(Path::new("./buddy.dodo.ffigen.dart"), "XainFfi", &functions, &mut out).unwrap();
+        generate(
+            Path::new("./buddy.dodo.ffigen.dart"),
+            "XainFfi",
+            &functions,
+            &mut out,
+        )
+        .unwrap();
         let out = String::from_utf8(out).unwrap();
         assert_trimmed_line_eq!(
             out,
