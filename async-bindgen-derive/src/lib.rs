@@ -50,7 +50,7 @@ fn api2(attrs: TokenStream2, item: TokenStream2) -> Result<TokenStream2, Error> 
             format!("Failed to write binding file: {}", err),
         )
     })?;
-    Ok(res.into_proc_macro_result())
+    Ok(res.into_token_stream())
 }
 
 fn parse_gen_api(attrs: TokenStream2, item: TokenStream2) -> Result<AsyncBindgenResult, Error> {
@@ -81,7 +81,7 @@ struct AsyncBindgenResult {
 }
 
 impl AsyncBindgenResult {
-    pub(crate) fn into_proc_macro_result(self) -> TokenStream2 {
+    pub(crate) fn into_token_stream(self) -> TokenStream2 {
         self.proc_tokens
     }
 
@@ -108,7 +108,7 @@ enum Language {
 
 impl Language {
     pub(crate) fn languages() -> impl Iterator<Item = Self> {
-        [Language::Dart].iter().copied()
+        IntoIterator::into_iter([Language::Dart])
     }
 }
 
@@ -124,7 +124,7 @@ mod tests {
 
         let result = parse_gen_api(attr, item).unwrap();
         let (_path, content) = result.setup_ext_file_writing(Path::new("/foo/"));
-        let expansion = result.into_proc_macro_result();
+        let expansion = result.into_token_stream();
         assert_rust_code_eq!(expansion.to_string(), expected_expanded_code);
         assert_rust_code_eq!(content, expected_file_code);
     }
@@ -164,7 +164,7 @@ mod tests {
             }
             #[doc = r" Wrapper for initiating the call to an async function."]
             #[no_mangle]
-            pub extern "C" fn async_bindgen_dart_c__bar_foot__dodo(
+            pub extern "C" fn async_bindgen_dart_call__bar_foot__dodo(
                 async_bindgen_dart_port_id: ::async_bindgen::dart::DartPortId,
                 async_bindgen_dart_completer_id: i64
             ) -> u8 {
@@ -185,7 +185,7 @@ mod tests {
             #[doc = r""]
             #[doc = r" See the language specific version of `PreparedCompleter::extract_result()`."]
             #[no_mangle]
-            pub unsafe extern "C" fn async_bindgen_dart_r__bar_foot__dodo(handle: i64) -> *const u8 {
+            pub unsafe extern "C" fn async_bindgen_dart_return__bar_foot__dodo(handle: i64) -> *const u8 {
                 unsafe { ::async_bindgen::dart::PreparedCompleter::extract_result(handle) }
             }
         "##,
@@ -227,7 +227,7 @@ mod tests {
             }
             #[doc = r" Wrapper for initiating the call to an async function."]
             #[no_mangle]
-            pub extern "C" fn async_bindgen_dart_c__bar_foot__dork(
+            pub extern "C" fn async_bindgen_dart_call__bar_foot__dork(
                 x: i32,
                 y: *const i32,
                 async_bindgen_dart_port_id: ::async_bindgen::dart::DartPortId,
@@ -250,7 +250,7 @@ mod tests {
             #[doc = r""]
             #[doc = r" See the language specific version of `PreparedCompleter::extract_result()`."]
             #[no_mangle]
-            pub unsafe extern "C" fn async_bindgen_dart_r__bar_foot__dork(handle: i64) -> isize {
+            pub unsafe extern "C" fn async_bindgen_dart_return__bar_foot__dork(handle: i64) -> isize {
                 unsafe { ::async_bindgen::dart::PreparedCompleter::extract_result(handle) }
             }
         "##,
@@ -294,7 +294,7 @@ mod tests {
             }
             #[doc = r" Wrapper for initiating the call to an async function."]
             #[no_mangle]
-            pub extern "C" fn async_bindgen_dart_c__bar_foot__dodo(
+            pub extern "C" fn async_bindgen_dart_call__bar_foot__dodo(
                 async_bindgen_dart_port_id: ::async_bindgen::dart::DartPortId,
                 async_bindgen_dart_completer_id: i64
             ) -> u8 {
@@ -315,12 +315,12 @@ mod tests {
             #[doc = r""]
             #[doc = r" See the language specific version of `PreparedCompleter::extract_result()`."]
             #[no_mangle]
-            pub unsafe extern "C" fn async_bindgen_dart_r__bar_foot__dodo(handle: i64) -> *const u8 {
+            pub unsafe extern "C" fn async_bindgen_dart_return__bar_foot__dodo(handle: i64) -> *const u8 {
                 unsafe { ::async_bindgen::dart::PreparedCompleter::extract_result(handle) }
             }
             #[doc = r" Wrapper for initiating the call to an async function."]
             #[no_mangle]
-            pub extern "C" fn async_bindgen_dart_c__bar_foot__dork(
+            pub extern "C" fn async_bindgen_dart_call__bar_foot__dork(
                 x: i32,
                 y: *const i32,
                 async_bindgen_dart_port_id: ::async_bindgen::dart::DartPortId,
@@ -343,7 +343,7 @@ mod tests {
             #[doc = r""]
             #[doc = r" See the language specific version of `PreparedCompleter::extract_result()`."]
             #[no_mangle]
-            pub unsafe extern "C" fn async_bindgen_dart_r__bar_foot__dork(handle: i64) -> isize {
+            pub unsafe extern "C" fn async_bindgen_dart_return__bar_foot__dork(handle: i64) -> isize {
                 unsafe { ::async_bindgen::dart::PreparedCompleter::extract_result(handle) }
             }
         "##,

@@ -87,8 +87,8 @@ fn split_dart_bindgen_name(name: &str) -> Option<(&str, &str, bool)> {
     let name = name.strip_prefix("async_bindgen_dart_")?;
     let is_call = name.starts_with('c');
     let name = name
-        .strip_prefix("c__")
-        .or_else(|| name.strip_prefix("r__"))?;
+        .strip_prefix("call__")
+        .or_else(|| name.strip_prefix("return__"))?;
     let (mod_name, fn_name) = name.split_once("__")?;
     Some((mod_name, fn_name, is_call))
 }
@@ -193,6 +193,7 @@ static SNIFF_FUNCTION_REGEX: Lazy<Regex> = Lazy::new(|| {
 
 #[cfg(test)]
 mod tests {
+    // TODO: enable tests
     // use regex::Captures;
 
     // use super::*;
@@ -203,20 +204,20 @@ mod tests {
     //     ///
     //     /// The foo errors
     //     /// - With the bar
-    //     int async_bindgen_dart_c__function_1_magic(
+    //     int async_bindgen_dart_call__function_1_magic(
     //         ffi.Pointer<CFoo> foo,
     //         ffi.Pointer<CBar> bar,
     //     ) {
-    //         return _async_bindgen_dart_c__function_1_magic(
+    //         return _async_bindgen_dart_call__function_1_magic(
     //             foo,
     //             bar,
     //         );
     //     }
 
-    //     ffi.Pointer<CustomCType> async_bindgen_dart_r__function_1_magic(
+    //     ffi.Pointer<CustomCType> async_bindgen_dart_return__function_1_magic(
     //         int handle,
     //     ) {
-    //         return _async_bindgen_dart_r__function_1_magic(
+    //         return _async_bindgen_dart_return__function_1_magic(
     //             handle,
     //         );
     //     }
@@ -228,7 +229,7 @@ mod tests {
     //     /// The behavior is undefined if:
     //     /// - I'm a dog.
     //     /// - I'm not a dog.
-    //     int async_bindgen_dart_c__function_2_magic(
+    //     int async_bindgen_dart_call__function_2_magic(
     //         double a,
     //     ) {
     //         return _async_bindgen_dart_w__function_2_magic(
@@ -236,10 +237,10 @@ mod tests {
     //         );
     //     }
 
-    //     int async_bindgen_dart_r__function_2_magic(
+    //     int async_bindgen_dart_return__function_2_magic(
     //         int handle,
     //     ) {
-    //         return _async_bindgen_dart_r__function_2_magic(
+    //         return _async_bindgen_dart_return__function_2_magic(
     //             handle,
     //         );
     //     }
@@ -254,8 +255,8 @@ mod tests {
 
     //     let f1m = &sigs[0];
     //     assert_eq!(&f1m.name, "function_1_magic");
-    //     assert_eq!(&f1m.ffi_call_name, "async_bindgen_dart_c__function_1_magic");
-    //     assert_eq!(&f1m.ffi_ret_name, "async_bindgen_dart_r__function_1_magic");
+    //     assert_eq!(&f1m.ffi_call_name, "async_bindgen_dart_call__function_1_magic");
+    //     assert_eq!(&f1m.ffi_ret_name, "async_bindgen_dart_return__function_1_magic");
     //     assert_eq!(&f1m.output, "ffi.Pointer<CustomCType>");
 
     //     assert_eq!(&f1m.inputs[0].name, "foo");
@@ -269,8 +270,8 @@ mod tests {
 
     //     let f2m = &sigs[1];
     //     assert_eq!(&f2m.name, "function_2_magic");
-    //     assert_eq!(&f2m.ffi_call_name, "async_bindgen_dart_c__function_2_magic");
-    //     assert_eq!(&f2m.ffi_ret_name, "async_bindgen_dart_r__function_2_magic");
+    //     assert_eq!(&f2m.ffi_call_name, "async_bindgen_dart_call__function_2_magic");
+    //     assert_eq!(&f2m.ffi_ret_name, "async_bindgen_dart_return__function_2_magic");
     //     assert_eq!(&f2m.output, "int");
 
     //     assert_eq!(&f2m.inputs[0].name, "a");
@@ -300,7 +301,7 @@ mod tests {
     //             "/// - With the bar",
     //         ],
     //         "int",
-    //         "async_bindgen_dart_c__function_1_magic",
+    //         "async_bindgen_dart_call__function_1_magic",
     //         vec!["ffi.Pointer<CFoo> foo,", "ffi.Pointer<CBar> bar,"],
     //     );
 
@@ -308,7 +309,7 @@ mod tests {
     //         &captures[1],
     //         vec![],
     //         "ffi.Pointer<CustomCType>",
-    //         "async_bindgen_dart_r__function_1_magic",
+    //         "async_bindgen_dart_return__function_1_magic",
     //         vec!["int handle,"],
     //     );
 
@@ -324,7 +325,7 @@ mod tests {
     //             "/// - I'm not a dog.",
     //         ],
     //         "int",
-    //         "async_bindgen_dart_c__function_2_magic",
+    //         "async_bindgen_dart_call__function_2_magic",
     //         vec!["double a,"],
     //     );
 
@@ -332,7 +333,7 @@ mod tests {
     //         &captures[3],
     //         vec![],
     //         "int",
-    //         "async_bindgen_dart_r__function_2_magic",
+    //         "async_bindgen_dart_return__function_2_magic",
     //         vec!["int handle,"],
     //     );
 

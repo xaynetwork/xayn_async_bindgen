@@ -1,4 +1,4 @@
-macro_rules! __assert_trimmed_line_eq {
+macro_rules! assert_trimmed_line_eq {
     ($left:expr, $right:expr) => {{
         let left = $left;
         let mut left = $crate::test_utils::trimmed_non_empty_lines(&left);
@@ -12,7 +12,7 @@ macro_rules! __assert_trimmed_line_eq {
     }};
 }
 
-pub(crate) use __assert_trimmed_line_eq as assert_trimmed_line_eq;
+pub(crate) use assert_trimmed_line_eq;
 
 pub(crate) fn trimmed_non_empty_lines(s: &str) -> impl Iterator<Item = &str> {
     s.lines().flat_map(|line| {

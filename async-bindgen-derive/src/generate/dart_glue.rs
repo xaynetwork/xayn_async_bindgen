@@ -26,14 +26,14 @@ pub(crate) fn path_prefix() -> Path {
 
 pub(crate) fn call_name(api_name: &Ident, fn_name: &Ident) -> Ident {
     Ident::new(
-        &format!("async_bindgen_dart_c__{}__{}", api_name, fn_name),
+        &format!("async_bindgen_dart_call__{}__{}", api_name, fn_name),
         fn_name.span(),
     )
 }
 
 pub(crate) fn ret_name(api_name: &Ident, fn_name: &Ident) -> Ident {
     Ident::new(
-        &format!("async_bindgen_dart_r__{}__{}", api_name, fn_name),
+        &format!("async_bindgen_dart_return__{}__{}", api_name, fn_name),
         fn_name.span(),
     )
 }

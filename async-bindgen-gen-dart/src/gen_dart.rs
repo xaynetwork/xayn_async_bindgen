@@ -161,9 +161,9 @@ mod tests {
             &mut out,
         )
         .unwrap();
-        let out = String::from_utf8(out).unwrap();
+
         assert_trimmed_line_eq!(
-            out,
+            String::from_utf8(out).unwrap(),
             "
             import 'dart:ffi' show NativeApi;
 

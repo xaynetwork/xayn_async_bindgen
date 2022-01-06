@@ -1,7 +1,7 @@
 use proc_macro2::Span;
 use syn::{punctuated::Punctuated, Ident, Path, PathArguments, PathSegment, Type, TypePath};
 
-/// Using a path prefix and a sting name create a type.
+/// Using a path prefix and a string name to create a type.
 ///
 /// The name will be turned into an `Ident` and then
 /// added to the `path_prefix` to create a [`Type::Path`]
