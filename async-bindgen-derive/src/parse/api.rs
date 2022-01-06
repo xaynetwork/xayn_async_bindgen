@@ -1,4 +1,4 @@
-use heck::SnakeCase;
+use heck::ToSnakeCase;
 use proc_macro2::{Ident, TokenStream};
 use syn::{
     parse::Error, spanned::Spanned, ImplItem, ItemImpl, Path, PathArguments, Type, Visibility,
