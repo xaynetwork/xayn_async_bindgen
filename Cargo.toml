@@ -16,8 +16,8 @@ path = "./async-bindgen"
 
 [patch.crates-io.xayn-dart-api-dl]
 git = "ssh://git@github.com/xaynetwork/xayn_dart_api_dl.git"
-branch = "TY-2221-2-bindings-for-dart-api-dl-h"
+branch = "TY-2221-3-post-refactor-parts"
 
 [patch.crates-io.xayn-dart-api-dl-sys]
 git = "ssh://git@github.com/xaynetwork/xayn_dart_api_dl.git"
-branch = "TY-2221-2-bindings-for-dart-api-dl-h"
+branch = "TY-2221-3-post-refactor-parts"

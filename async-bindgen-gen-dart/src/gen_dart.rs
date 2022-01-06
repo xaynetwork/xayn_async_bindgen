@@ -35,7 +35,7 @@ class {{type_name}} {
             {{/each}}
         ) {
             final setup = FfiCompleterRegistry.newCompleter(
-                extractor: _inner.{{ffi_ret_name}},
+                extractor: _inner.{{ffi_return_name}},
             );
             final callOk = _inner.{{ffi_call_name}}(
                 {{#each inputs}}

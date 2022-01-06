@@ -4,7 +4,7 @@
 use std::future::Future;
 
 use xayn_dart_api_dl::{
-    cobject::{OwnedCObject, TypedData},
+    cobject::{CObject, TypedData},
     ports::SendPort,
     DartRuntime,
 };
@@ -89,16 +89,12 @@ impl PreparedCompleter {
     fn send_result_if_not_already_done(&mut self, handle: Option<Handle>) {
         if let Some(port) = self.send_port.take() {
             let res = if let Some(handle) = handle {
-                OwnedCObject::typed_data(TypedData::Int64(vec![
-                    MAGIC_TAG,
-                    self.completer_id,
-                    handle,
-                ]))
+                CObject::typed_data(TypedData::Int64(vec![MAGIC_TAG, self.completer_id, handle]))
             } else {
-                OwnedCObject::array(vec![
-                    Box::new(OwnedCObject::int64(MAGIC_TAG)),
-                    Box::new(OwnedCObject::int64(self.completer_id)),
-                    Box::new(OwnedCObject::string_lossy("future canceled in rust")),
+                CObject::array(vec![
+                    Box::new(CObject::int64(MAGIC_TAG)),
+                    Box::new(CObject::int64(self.completer_id)),
+                    Box::new(CObject::string_lossy("future canceled in rust")),
                 ])
             };
             if let Err(_err) = port.post_cobject(res) {
