@@ -75,7 +75,7 @@ fn parse_gen_api(attrs: TokenStream2, item: TokenStream2) -> Result<AsyncBindgen
 
     let mut file_tokens = quote! {
         #![doc(hidden)]
-        #![allow(clippy::unused_unit, clippy::semicolon_if_nothing_returned)]
+        #![allow(clippy::unused_unit, clippy::semicolon_if_nothing_returned, clippy::used_underscore_binding)]
     };
     file_tokens.extend(api.header_code().clone());
     file_tokens.extend(generate_type(&api));
@@ -167,7 +167,7 @@ mod tests {
         "#,
             r##"
             #![doc(hidden)]
-            #![allow(clippy::unused_unit, clippy::semicolon_if_nothing_returned)]
+            #![allow(clippy::unused_unit, clippy::semicolon_if_nothing_returned, clippy::used_underscore_binding)]
             pub struct BarFoot;
             #[doc = r" Initializes the dart api."]
             #[doc = r""]
@@ -231,7 +231,7 @@ mod tests {
         "#,
             r##"
             #![doc(hidden)]
-            #![allow(clippy::unused_unit, clippy::semicolon_if_nothing_returned)]
+            #![allow(clippy::unused_unit, clippy::semicolon_if_nothing_returned, clippy::used_underscore_binding)]
             pub struct BarFoot;
             #[doc = r" Initializes the dart api."]
             #[doc = r""]
@@ -299,7 +299,7 @@ mod tests {
         "#,
             r##"
             #![doc(hidden)]
-            #![allow(clippy::unused_unit, clippy::semicolon_if_nothing_returned)]
+            #![allow(clippy::unused_unit, clippy::semicolon_if_nothing_returned, clippy::used_underscore_binding)]
             pub struct BarFoot;
             #[doc = r" Initializes the dart api."]
             #[doc = r""]

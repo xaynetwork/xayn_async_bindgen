@@ -30,8 +30,6 @@
     clippy::module_name_repetitions
 )]
 
-use std::mem::forget;
-
 pub mod async_bindings;
 
 #[async_bindgen::api(
@@ -49,10 +47,8 @@ impl AsyncApi {
         x - y
     }
 
-    /// Does nothing, leaks the box.
-    pub async fn foo(bar: Box<c_void>) {
-        forget(bar);
-    }
+    /// Does nothing
+    pub async fn foo(_bar: Option<&'static mut c_void>) {}
 }
 
 #[async_bindgen::api]
