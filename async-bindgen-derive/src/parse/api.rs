@@ -24,22 +24,21 @@ pub(crate) struct Api {
     type_name: Ident,
     mod_name: Ident,
     functions: Vec<FunctionInfo>,
+    header_code: TokenStream,
 }
 
 impl Api {
     pub(crate) fn parse(attrs: TokenStream, impl_block: TokenStream) -> Result<Self, Error> {
-        if !attrs.is_empty() {
-            return Err(Error::new_spanned(
-                attrs,
-                "async_bindgen::api currently doesn't support arguments",
-            ));
-        }
         let (type_name, functions) = parse_impl_block(impl_block)?;
         let mod_name = Ident::new(&type_name.to_string().to_snake_case(), type_name.span());
         Ok(Self {
             type_name,
             mod_name,
             functions,
+            // Include tokens as code to allow injecting imports
+            // this is not API forward compatible, but a API braking change
+            // is for now full ok and it's just simpler.
+            header_code: attrs,
         })
     }
 
@@ -53,6 +52,10 @@ impl Api {
 
     pub(crate) fn functions(&self) -> &[FunctionInfo] {
         &self.functions
+    }
+
+    pub(crate) fn header_code(&self) -> &TokenStream {
+        &self.header_code
     }
 }
 

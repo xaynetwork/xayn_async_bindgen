@@ -30,9 +30,14 @@
     clippy::module_name_repetitions
 )]
 
+use std::mem::forget;
+
 pub mod async_bindings;
 
-#[async_bindgen::api]
+#[async_bindgen::api(
+    // Imports here must be absolute.
+    use std::ffi::c_void;
+)]
 impl AsyncApi {
     /// Adds two bytes.
     pub async fn add(x: u8, y: u8) -> u8 {
@@ -42,6 +47,11 @@ impl AsyncApi {
     /// Subs two bytes.
     pub async fn sub(x: u8, y: u8) -> u8 {
         x - y
+    }
+
+    /// Does nothing, leaks the box.
+    pub async fn foo(bar: Box<c_void>) {
+        forget(bar);
     }
 }
 

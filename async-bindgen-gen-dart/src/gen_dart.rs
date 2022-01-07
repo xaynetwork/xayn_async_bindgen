@@ -24,6 +24,7 @@ use super::parse_genesis::AsyncFunctionSignature;
 
 static IMPORTS_TEMPLATE_STR: &str = r"
 import 'dart:ffi' show NativeApi;
+import 'dart:ffi' as ffi;
 
 import 'package:async_bindgen_dart_utils/async_bindgen_dart_utils.dart'
     show CouldNotInitializeDartApiError, FfiCompleterRegistry;
@@ -180,6 +181,7 @@ mod tests {
             String::from_utf8(out).unwrap(),
             "
             import 'dart:ffi' show NativeApi;
+            import 'dart:ffi' as ffi;
 
             import 'package:async_bindgen_dart_utils/async_bindgen_dart_utils.dart'
                 show CouldNotInitializeDartApiError, FfiCompleterRegistry;
