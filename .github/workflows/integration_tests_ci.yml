@@ -82,7 +82,10 @@ jobs:
 
       - name: Build Rust
         working-directory: ${{ env.RUST_WORKSPACE }}
-        run: cargo build -p integration-tests-bindings
+        run: |
+          # Workaround for code-gen bug
+          cargo check --quiet 2>/dev/null || :
+          cargo build -p integration-tests-bindings
 
       - name: Unit test of integration test crate
         working-directory: ${{ env.RUST_WORKSPACE }}
