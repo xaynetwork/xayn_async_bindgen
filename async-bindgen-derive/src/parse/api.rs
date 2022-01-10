@@ -36,8 +36,8 @@ impl Api {
             mod_name,
             functions,
             // Include tokens as code to allow injecting imports
-            // this is not API forward compatible, but a API braking change
-            // is for now full ok and it's just simpler.
+            // this is not API forward compatible, but an API braking change
+            // is (for now) ok.
             header_code: attrs,
         })
     }

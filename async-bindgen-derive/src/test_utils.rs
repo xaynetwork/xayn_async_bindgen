@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-macro_rules! __assert_rust_code_eq {
+macro_rules! assert_rust_code_eq {
     ($left:expr, $right:expr) => {{
         let left = $left;
         let right = $right;
@@ -26,7 +26,7 @@ macro_rules! __assert_rust_code_eq {
     }};
 }
 
-pub(crate) use __assert_rust_code_eq as assert_rust_code_eq;
+pub(crate) use assert_rust_code_eq;
 
 #[cfg(test)]
 mod tests {
