@@ -308,6 +308,8 @@ mod tests {
 
     #[test]
     fn test_codegen_multiple_functions() {
+        #![allow(clippy::too_many_lines)]
+
         test_codegen(
             r#"
             impl BarFoot {
