@@ -90,12 +90,26 @@ fn generate_extern_function(api: &Api, func: &FunctionInfo, lang: Language) -> T
 
     quote! {
         /// Wrapper for initiating the call to an async function.
+        ///
+        /// # Safety
+        ///
+        /// The caller must make sure all lifetime and aliasing constraints are valid until
+        /// the rust-future completed or was dropped.
+        ///
+        /// This means non-owning references to extern allocated memory you pass in must
+        /// not be:
+        ///
+        /// - deallocated
+        /// - accessed (if `&mut`)
+        /// - modified (if `&`)
+        ///
+        /// See the `spawn` methods documentation or the completer.
         #[no_mangle]
-        pub extern "C" fn #call_name(#(#wrapper_function_arg_names: #wrapper_function_arg_types),*)
+        pub unsafe extern "C" fn #call_name(#(#wrapper_function_arg_names: #wrapper_function_arg_types),*)
         -> u8 {
             match #completer::new(#(#completer_args),*) {
                 Ok(completer) => {
-                    completer.spawn(#api_type_name::#async_name(#(#async_call_args),*));
+                    unsafe { completer.spawn(#api_type_name::#async_name(#(#async_call_args),*)) };
                     1
                 }
                 Err(_) => 0

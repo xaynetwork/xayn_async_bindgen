@@ -184,8 +184,22 @@ mod tests {
                 unsafe { ::async_bindgen::dart::initialize_dart_api_dl(init_data).is_ok().into() }
             }
             #[doc = r" Wrapper for initiating the call to an async function."]
+            #[doc = r""]
+            #[doc = r" # Safety"]
+            #[doc = r""]
+            #[doc = r" The caller must make sure all lifetime and aliasing constraints are valid until"]
+            #[doc = r" the rust-future completed or was dropped."]
+            #[doc = r""]
+            #[doc = r" This means non-owning references to extern allocated memory you pass in must"]
+            #[doc = r" not be:"]
+            #[doc = r""]
+            #[doc = r" - deallocated"]
+            #[doc = r" - accessed (if `&mut`)"]
+            #[doc = r" - modified (if `&`)"]
+            #[doc = r""]
+            #[doc = r" See the `spawn` methods documentation or the completer."]
             #[no_mangle]
-            pub extern "C" fn async_bindgen_dart_call__bar_foot__dodo(
+            pub unsafe extern "C" fn async_bindgen_dart_call__bar_foot__dodo(
                 async_bindgen_dart_port_id: ::async_bindgen::dart::DartPortId,
                 async_bindgen_dart_completer_id: i64
             ) -> u8 {
@@ -194,7 +208,7 @@ mod tests {
                     async_bindgen_dart_completer_id
                 ) {
                     Ok(completer) => {
-                        completer.spawn(BarFoot::dodo());
+                        unsafe { completer.spawn(BarFoot::dodo()) };
                         1
                     }
                     Err(_) => 0
@@ -247,8 +261,22 @@ mod tests {
                 unsafe { ::async_bindgen::dart::initialize_dart_api_dl(init_data).is_ok().into() }
             }
             #[doc = r" Wrapper for initiating the call to an async function."]
+            #[doc = r""]
+            #[doc = r" # Safety"]
+            #[doc = r""]
+            #[doc = r" The caller must make sure all lifetime and aliasing constraints are valid until"]
+            #[doc = r" the rust-future completed or was dropped."]
+            #[doc = r""]
+            #[doc = r" This means non-owning references to extern allocated memory you pass in must"]
+            #[doc = r" not be:"]
+            #[doc = r""]
+            #[doc = r" - deallocated"]
+            #[doc = r" - accessed (if `&mut`)"]
+            #[doc = r" - modified (if `&`)"]
+            #[doc = r""]
+            #[doc = r" See the `spawn` methods documentation or the completer."]
             #[no_mangle]
-            pub extern "C" fn async_bindgen_dart_call__bar_foot__dork(
+            pub unsafe extern "C" fn async_bindgen_dart_call__bar_foot__dork(
                 x: i32,
                 y: *const i32,
                 async_bindgen_dart_port_id: ::async_bindgen::dart::DartPortId,
@@ -259,7 +287,7 @@ mod tests {
                     async_bindgen_dart_completer_id
                 ) {
                     Ok(completer) => {
-                        completer.spawn(BarFoot::dork(x, y));
+                        unsafe { completer.spawn(BarFoot::dork(x, y)) };
                         1
                     }
                     Err(_) => 0
@@ -314,8 +342,22 @@ mod tests {
                 unsafe { ::async_bindgen::dart::initialize_dart_api_dl(init_data).is_ok().into() }
             }
             #[doc = r" Wrapper for initiating the call to an async function."]
+            #[doc = r""]
+            #[doc = r" # Safety"]
+            #[doc = r""]
+            #[doc = r" The caller must make sure all lifetime and aliasing constraints are valid until"]
+            #[doc = r" the rust-future completed or was dropped."]
+            #[doc = r""]
+            #[doc = r" This means non-owning references to extern allocated memory you pass in must"]
+            #[doc = r" not be:"]
+            #[doc = r""]
+            #[doc = r" - deallocated"]
+            #[doc = r" - accessed (if `&mut`)"]
+            #[doc = r" - modified (if `&`)"]
+            #[doc = r""]
+            #[doc = r" See the `spawn` methods documentation or the completer."]
             #[no_mangle]
-            pub extern "C" fn async_bindgen_dart_call__bar_foot__dodo(
+            pub unsafe extern "C" fn async_bindgen_dart_call__bar_foot__dodo(
                 async_bindgen_dart_port_id: ::async_bindgen::dart::DartPortId,
                 async_bindgen_dart_completer_id: i64
             ) -> u8 {
@@ -324,7 +366,7 @@ mod tests {
                     async_bindgen_dart_completer_id
                 ) {
                     Ok(completer) => {
-                        completer.spawn(BarFoot::dodo());
+                        unsafe { completer.spawn(BarFoot::dodo()) };
                         1
                     }
                     Err(_) => 0
@@ -340,8 +382,22 @@ mod tests {
                 unsafe { ::async_bindgen::dart::PreparedCompleter::extract_result(handle) }
             }
             #[doc = r" Wrapper for initiating the call to an async function."]
+            #[doc = r""]
+            #[doc = r" # Safety"]
+            #[doc = r""]
+            #[doc = r" The caller must make sure all lifetime and aliasing constraints are valid until"]
+            #[doc = r" the rust-future completed or was dropped."]
+            #[doc = r""]
+            #[doc = r" This means non-owning references to extern allocated memory you pass in must"]
+            #[doc = r" not be:"]
+            #[doc = r""]
+            #[doc = r" - deallocated"]
+            #[doc = r" - accessed (if `&mut`)"]
+            #[doc = r" - modified (if `&`)"]
+            #[doc = r""]
+            #[doc = r" See the `spawn` methods documentation or the completer."]
             #[no_mangle]
-            pub extern "C" fn async_bindgen_dart_call__bar_foot__dork(
+            pub unsafe extern "C" fn async_bindgen_dart_call__bar_foot__dork(
                 x: i32,
                 y: *const i32,
                 async_bindgen_dart_port_id: ::async_bindgen::dart::DartPortId,
@@ -352,7 +408,7 @@ mod tests {
                     async_bindgen_dart_completer_id
                 ) {
                     Ok(completer) => {
-                        completer.spawn(BarFoot::dork(x, y));
+                        unsafe { completer.spawn(BarFoot::dork(x, y)) };
                         1
                     }
                     Err(_) => 0
