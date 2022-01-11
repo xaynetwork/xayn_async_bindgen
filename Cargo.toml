@@ -7,17 +7,13 @@ members = [
 ]
 resolver = "2"
 
-[workspace.metadata]
-# minimum supported rust version
-msrv = "1.55.0"
-
 [patch.crates-io.async-bindgen]
 path = "./async-bindgen"
 
 [patch.crates-io.xayn-dart-api-dl]
 git = "ssh://git@github.com/xaynetwork/xayn_dart_api_dl.git"
-branch = "TY-2221-3-post-refactor-parts"
+branch = "main"
 
 [patch.crates-io.xayn-dart-api-dl-sys]
 git = "ssh://git@github.com/xaynetwork/xayn_dart_api_dl.git"
-branch = "TY-2221-3-post-refactor-parts"
+branch = "main"
