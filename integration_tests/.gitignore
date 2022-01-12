@@ -5,5 +5,7 @@
 # Conventional directory for build outputs.
 build/
 
+# Do not commit auto generated files for integration tests
 *.ffigen.dart
-# *.ext.dart
+*.ext.dart
+*.h

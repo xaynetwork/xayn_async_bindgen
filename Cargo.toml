@@ -1,21 +1,19 @@
 [workspace]
 members = [
     "async-bindgen",
+    "async-bindgen-derive",
+    "async-bindgen-gen-dart",
     "integration-tests-bindings"
 ]
 resolver = "2"
-
-[workspace.metadata]
-# minimum supported rust version
-msrv = "1.55.0"
 
 [patch.crates-io.async-bindgen]
 path = "./async-bindgen"
 
 [patch.crates-io.xayn-dart-api-dl]
-git="ssh://git@github.com/xaynetwork/xayn_dart_api_dl.git"
-branch="TY-2221-2-bindings-for-dart-api-dl-h"
+git = "ssh://git@github.com/xaynetwork/xayn_dart_api_dl.git"
+branch = "main"
 
 [patch.crates-io.xayn-dart-api-dl-sys]
-git="ssh://git@github.com/xaynetwork/xayn_dart_api_dl.git"
-branch="TY-2221-2-bindings-for-dart-api-dl-h"
+git = "ssh://git@github.com/xaynetwork/xayn_dart_api_dl.git"
+branch = "main"

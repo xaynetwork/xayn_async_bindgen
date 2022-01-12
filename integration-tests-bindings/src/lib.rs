@@ -1,3 +1,17 @@
+// Copyright 2022 Xayn AG
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 //! Rust bindings used by the integration tests.
 #![deny(
     clippy::pedantic,
@@ -16,15 +30,12 @@
     clippy::module_name_repetitions
 )]
 
-// #[rustfmt::skip]
-pub mod async_api;
-// #[rustfmt::skip]
-pub mod api2;
+pub mod async_bindings;
 
-// this normally is included in the proc macro expansion
-use crate::async_api::AsyncApi;
-
-// #[async_bindgen::api]
+#[async_bindgen::api(
+    // Imports here must be absolute.
+    use std::ffi::c_void;
+)]
 impl AsyncApi {
     /// Adds two bytes.
     pub async fn add(x: u8, y: u8) -> u8 {
@@ -35,12 +46,12 @@ impl AsyncApi {
     pub async fn sub(x: u8, y: u8) -> u8 {
         x - y
     }
+
+    /// Does nothing
+    pub async fn foo(_bar: Option<&'static mut c_void>) {}
 }
 
-// this normally is included in the proc macro expansion
-use crate::api2::Api2;
-
-// #[async_bindgen::api]
+#[async_bindgen::api]
 impl Api2 {
     /// Returns 12.
     pub async fn get_the_byte() -> u8 {

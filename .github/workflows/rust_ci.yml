@@ -44,6 +44,19 @@ jobs:
         working-directory: ${{ env.RUST_WORKSPACE }}
         run: cargo +${{ env.RUST_NIGHTLY }} fmt --all -- --check
 
+  cargo-sort:
+    runs-on: ubuntu-20.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579 # v2.4.0
+
+      - name: Install cargo-sort
+        uses: ./.ci/install-cargo-sort
+
+      - name: cargo sort
+        run: cargo sort --grouped --workspace --check
+
   cargo-clippy:
     runs-on: ubuntu-20.04
     needs: cargo-format
@@ -65,7 +78,10 @@ jobs:
 
       - name: cargo clippy
         working-directory: ${{ env.RUST_WORKSPACE }}
-        run: cargo clippy --all-targets -- --deny warnings
+        run: |
+          # Workaround for code-gen bug
+          cargo check --quiet 2>/dev/null || :
+          cargo clippy --all-targets -- --deny warnings
 
   cargo-test:
     runs-on: ubuntu-20.04
@@ -89,6 +105,8 @@ jobs:
       - name: Run tests
         working-directory: ${{ env.RUST_WORKSPACE }}
         run: |
+          # Workaround for code-gen bug
+          cargo check --quiet 2>/dev/null || :
           cargo test --all-targets --quiet
           cargo test --doc --quiet
 

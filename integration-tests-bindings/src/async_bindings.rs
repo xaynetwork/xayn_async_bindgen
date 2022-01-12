@@ -12,19 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import 'package:integration_tests/integration_tests.dart' show asyncApi, api2;
-import 'package:test/test.dart';
+//! Module containing auto-generated sub-modules with async-bindings.
+//!
+//! This exists as a workaround to cbindgen not being able to handle
+//! proc-macro generated code on stable.
 
-Future<void> main() async {
-  test('add works', () async {
-    expect(await asyncApi.add(19, 20), equals(39));
-  });
-
-  test('sub works', () async {
-    expect(await asyncApi.sub(100, 20), equals(80));
-  });
-
-  test('api2 works', () async {
-    expect(await api2.getTheByte(), equals(12));
-  });
-}
+#[rustfmt::skip]
+pub mod async_api;
+#[rustfmt::skip]
+pub mod api2;
