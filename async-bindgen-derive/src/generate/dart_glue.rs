@@ -61,8 +61,7 @@ pub(crate) fn generate_dart_api_init(api_name: &Ident) -> TokenStream {
     quote! {
         /// Initializes the dart api.
         ///
-        /// Is safe to be called multiple times and form multiple
-        /// thread.
+        /// It's safe to be called multiple times and from multiple threads.
         ///
         /// # Safety
         ///

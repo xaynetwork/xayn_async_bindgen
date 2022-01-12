@@ -171,8 +171,7 @@ mod tests {
             pub struct BarFoot;
             #[doc = r" Initializes the dart api."]
             #[doc = r""]
-            #[doc = r" Is safe to be called multiple times and form multiple"]
-            #[doc = r" thread."]
+            #[doc = r" It's safe to be called multiple times and from multiple threads."]
             #[doc = r""]
             #[doc = r" # Safety"]
             #[doc = r""]
@@ -235,8 +234,7 @@ mod tests {
             pub struct BarFoot;
             #[doc = r" Initializes the dart api."]
             #[doc = r""]
-            #[doc = r" Is safe to be called multiple times and form multiple"]
-            #[doc = r" thread."]
+            #[doc = r" It's safe to be called multiple times and from multiple threads."]
             #[doc = r""]
             #[doc = r" # Safety"]
             #[doc = r""]
@@ -303,8 +301,7 @@ mod tests {
             pub struct BarFoot;
             #[doc = r" Initializes the dart api."]
             #[doc = r""]
-            #[doc = r" Is safe to be called multiple times and form multiple"]
-            #[doc = r" thread."]
+            #[doc = r" It's safe to be called multiple times and from multiple threads."]
             #[doc = r""]
             #[doc = r" # Safety"]
             #[doc = r""]

@@ -69,8 +69,8 @@ class {{type_name}} {
 }
 ";
 
-static CLASS_TEMPLATE_NAME: &str = "class";
-static IMPORTS_TEMPLATE_NAME: &str = "imports";
+const CLASS_TEMPLATE_NAME: &str = "class";
+const IMPORTS_TEMPLATE_NAME: &str = "imports";
 static TEMPLATES: Lazy<Handlebars> = Lazy::new(|| {
     let mut reg = Handlebars::new();
     reg.register_escape_fn(|v| v.into());
