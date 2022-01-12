@@ -24,11 +24,7 @@
     unsafe_op_in_unsafe_fn
 )]
 #![warn(missing_docs, unreachable_pub)]
-#![allow(
-    clippy::must_use_candidate,
-    clippy::items_after_statements,
-    clippy::module_name_repetitions
-)]
+#![allow(clippy::must_use_candidate, clippy::items_after_statements)]
 
 mod async_bindings;
 
