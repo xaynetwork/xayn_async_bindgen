@@ -30,7 +30,7 @@
     clippy::module_name_repetitions
 )]
 
-pub mod async_bindings;
+mod async_bindings;
 
 #[async_bindgen::api(
     // Imports here must be absolute.
