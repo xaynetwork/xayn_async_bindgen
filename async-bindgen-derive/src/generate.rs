@@ -93,7 +93,7 @@ fn generate_extern_function(api: &Api, func: &FunctionInfo, lang: Language) -> T
         ///
         /// # Safety
         ///
-        /// The caller must make sure all lifetime and aliasing constraints are valid until
+        /// The caller must make sure all lifetimes and aliasing constraints are valid until
         /// the rust-future completed or was dropped.
         ///
         /// This means non-owning references to extern allocated memory you pass in must
@@ -103,7 +103,7 @@ fn generate_extern_function(api: &Api, func: &FunctionInfo, lang: Language) -> T
         /// - accessed (if `&mut`)
         /// - modified (if `&`)
         ///
-        /// See the `spawn` methods documentation or the completer.
+        /// See the `spawn` method documentation of the `PreparedCompleter`.
         #[no_mangle]
         pub unsafe extern "C" fn #call_name(#(#wrapper_function_arg_names: #wrapper_function_arg_types),*)
         -> u8 {

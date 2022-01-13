@@ -94,14 +94,13 @@ impl PreparedCompleter {
     ///   *always* life until the future is completed or dropped.
     ///     - This opts out of lifetime checks.
     ///     - This is done as rust can't check lifetimes coming from dart.
-    /// - The non-static parts of the future
     /// - The std impl of `Box<dyn Future<Output=()> + Send + 'a>` must not be specialized
     ///   on `'a == 'static`.
     pub unsafe fn spawn<'a, T: 'a>(self, future: impl Future<Output = T> + Send + 'a) {
         let future: Pin<Box<dyn Future<Output = ()> + Send + 'a>> =
             Box::pin(self.bind_future(future));
-        // Safe: We lifted the liftime checks into the unsafe contract and from there into dart,
-        //       they are lifetimes handled by dart anyway, so rusts compiler time analysis can
+        // Safe: We lifted the lifetime checks into the unsafe contract and from there into dart,
+        //       they are lifetimes handled by dart anyway, so rusts borrow-checker can
         //       not help us there.
         let future: Pin<Box<dyn Future<Output = ()> + Send + 'static>> =
             unsafe { transmute(future) };
