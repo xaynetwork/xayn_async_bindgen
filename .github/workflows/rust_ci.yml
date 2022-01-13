@@ -5,6 +5,8 @@ on:
     paths:
       - '.github/workflows/rust_ci.yml'
       - 'async-bindgen/**'
+      - 'async-bindgen-derive/**'
+      - 'async-bindgen-gen-dart/**'
       - 'integration-tests-bindings/**'
 
 concurrency:
