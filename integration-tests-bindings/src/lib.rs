@@ -48,7 +48,7 @@ impl AsyncApi {
     }
 
     /// Does nothing
-    pub async fn foo(_bar: Option<&'static mut c_void>) {}
+    pub async fn foo(_bar: Option<&mut c_void>) {}
 }
 
 #[async_bindgen::api]

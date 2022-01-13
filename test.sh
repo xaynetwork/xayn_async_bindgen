@@ -7,7 +7,7 @@ cargo sort --grouped --workspace --check
 # Workaround for code-gen bug
 cargo check --quiet 2>/dev/null || :
 
-cargo clippy --all
+cargo clippy --all-targets
 
 cargo test
 
