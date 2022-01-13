@@ -187,7 +187,7 @@ mod tests {
             #[doc = r""]
             #[doc = r" # Safety"]
             #[doc = r""]
-            #[doc = r" The caller must make sure all lifetime and aliasing constraints are valid until"]
+            #[doc = r" The caller must make sure all lifetimes and aliasing constraints are valid until"]
             #[doc = r" the rust-future completed or was dropped."]
             #[doc = r""]
             #[doc = r" This means non-owning references to extern allocated memory you pass in must"]
@@ -197,7 +197,7 @@ mod tests {
             #[doc = r" - accessed (if `&mut`)"]
             #[doc = r" - modified (if `&`)"]
             #[doc = r""]
-            #[doc = r" See the `spawn` methods documentation or the completer."]
+            #[doc = r" See the `spawn` method documentation of the `PreparedCompleter`."]
             #[no_mangle]
             pub unsafe extern "C" fn async_bindgen_dart_call__bar_foot__dodo(
                 async_bindgen_dart_port_id: ::async_bindgen::dart::DartPortId,
@@ -264,7 +264,7 @@ mod tests {
             #[doc = r""]
             #[doc = r" # Safety"]
             #[doc = r""]
-            #[doc = r" The caller must make sure all lifetime and aliasing constraints are valid until"]
+            #[doc = r" The caller must make sure all lifetimes and aliasing constraints are valid until"]
             #[doc = r" the rust-future completed or was dropped."]
             #[doc = r""]
             #[doc = r" This means non-owning references to extern allocated memory you pass in must"]
@@ -274,7 +274,7 @@ mod tests {
             #[doc = r" - accessed (if `&mut`)"]
             #[doc = r" - modified (if `&`)"]
             #[doc = r""]
-            #[doc = r" See the `spawn` methods documentation or the completer."]
+            #[doc = r" See the `spawn` method documentation of the `PreparedCompleter`."]
             #[no_mangle]
             pub unsafe extern "C" fn async_bindgen_dart_call__bar_foot__dork(
                 x: i32,
@@ -347,7 +347,7 @@ mod tests {
             #[doc = r""]
             #[doc = r" # Safety"]
             #[doc = r""]
-            #[doc = r" The caller must make sure all lifetime and aliasing constraints are valid until"]
+            #[doc = r" The caller must make sure all lifetimes and aliasing constraints are valid until"]
             #[doc = r" the rust-future completed or was dropped."]
             #[doc = r""]
             #[doc = r" This means non-owning references to extern allocated memory you pass in must"]
@@ -357,7 +357,7 @@ mod tests {
             #[doc = r" - accessed (if `&mut`)"]
             #[doc = r" - modified (if `&`)"]
             #[doc = r""]
-            #[doc = r" See the `spawn` methods documentation or the completer."]
+            #[doc = r" See the `spawn` method documentation of the `PreparedCompleter`."]
             #[no_mangle]
             pub unsafe extern "C" fn async_bindgen_dart_call__bar_foot__dodo(
                 async_bindgen_dart_port_id: ::async_bindgen::dart::DartPortId,
@@ -387,7 +387,7 @@ mod tests {
             #[doc = r""]
             #[doc = r" # Safety"]
             #[doc = r""]
-            #[doc = r" The caller must make sure all lifetime and aliasing constraints are valid until"]
+            #[doc = r" The caller must make sure all lifetimes and aliasing constraints are valid until"]
             #[doc = r" the rust-future completed or was dropped."]
             #[doc = r""]
             #[doc = r" This means non-owning references to extern allocated memory you pass in must"]
@@ -397,7 +397,7 @@ mod tests {
             #[doc = r" - accessed (if `&mut`)"]
             #[doc = r" - modified (if `&`)"]
             #[doc = r""]
-            #[doc = r" See the `spawn` methods documentation or the completer."]
+            #[doc = r" See the `spawn` method documentation of the `PreparedCompleter`."]
             #[no_mangle]
             pub unsafe extern "C" fn async_bindgen_dart_call__bar_foot__dork(
                 x: i32,
