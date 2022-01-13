@@ -11,9 +11,9 @@ resolver = "2"
 path = "./async-bindgen"
 
 [patch.crates-io.xayn-dart-api-dl]
-git = "ssh://git@github.com/xaynetwork/xayn_dart_api_dl.git"
+git = "https://github.com/xaynetwork/xayn_dart_api_dl.git"
 branch = "main"
 
 [patch.crates-io.xayn-dart-api-dl-sys]
-git = "ssh://git@github.com/xaynetwork/xayn_dart_api_dl.git"
+git = "https://github.com/xaynetwork/xayn_dart_api_dl.git"
 branch = "main"

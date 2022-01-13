@@ -15,7 +15,6 @@ permissions:
   contents: read
 
 env:
-  CARGO_NET_GIT_FETCH_WITH_CLI: true
   DART_VERSION: '2.14.4'
   DART_WORKSPACE: ${{ github.workspace }}/async_bindgen_dart_utils
   RUST_WORKSPACE: ${{ github.workspace }}/
@@ -28,12 +27,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579 # v2.4.0
-
-      - name: Install SSH key
-        uses: shimataro/ssh-key-action@v2
-        with:
-          key: ${{ secrets.SSH }}
-          known_hosts: ${{ secrets.KNOWN_HOSTS }}
 
       - name: Install dart
         uses: dart-lang/setup-dart@6a218f2413a3e78e9087f638a238f6b40893203d # v1.3
@@ -52,12 +45,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579 # v2.4.0
-
-      - name: Install SSH key
-        uses: shimataro/ssh-key-action@v2
-        with:
-          key: ${{ secrets.SSH }}
-          known_hosts: ${{ secrets.KNOWN_HOSTS }}
 
       - name: Install dart
         uses: dart-lang/setup-dart@6a218f2413a3e78e9087f638a238f6b40893203d # v1.3
@@ -81,12 +68,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579 # v2.4.0
 
-      - name: Install SSH key
-        uses: shimataro/ssh-key-action@v2
-        with:
-          key: ${{ secrets.SSH }}
-          known_hosts: ${{ secrets.KNOWN_HOSTS }}
-
       - name: Install dart
         uses: dart-lang/setup-dart@6a218f2413a3e78e9087f638a238f6b40893203d # v1.3
         with:
@@ -108,12 +89,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579 # v2.4.0
-
-      - name: Install SSH key
-        uses: shimataro/ssh-key-action@v2
-        with:
-          key: ${{ secrets.SSH }}
-          known_hosts: ${{ secrets.KNOWN_HOSTS }}
 
       - name: Install dart
         uses: dart-lang/setup-dart@6a218f2413a3e78e9087f638a238f6b40893203d # v1.3
