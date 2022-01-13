@@ -24,13 +24,9 @@
     unsafe_op_in_unsafe_fn
 )]
 #![warn(missing_docs, unreachable_pub)]
-#![allow(
-    clippy::must_use_candidate,
-    clippy::items_after_statements,
-    clippy::module_name_repetitions
-)]
+#![allow(clippy::must_use_candidate, clippy::items_after_statements)]
 
-pub mod async_bindings;
+mod async_bindings;
 
 #[async_bindgen::api(
     // Imports here must be absolute.

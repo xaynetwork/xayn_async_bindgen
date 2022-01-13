@@ -75,7 +75,13 @@ fn parse_gen_api(attrs: TokenStream2, item: TokenStream2) -> Result<AsyncBindgen
 
     let mut file_tokens = quote! {
         #![doc(hidden)]
-        #![allow(clippy::unused_unit, clippy::semicolon_if_nothing_returned, clippy::used_underscore_binding)]
+        #![allow(
+            clippy::unused_unit,
+            clippy::semicolon_if_nothing_returned,
+            clippy::used_underscore_binding,
+            clippy::module_name_repetitions,
+            unreachable_pub,
+        )]
     };
     file_tokens.extend(api.header_code().clone());
     file_tokens.extend(generate_type(&api));
@@ -167,7 +173,14 @@ mod tests {
         "#,
             r##"
             #![doc(hidden)]
-            #![allow(clippy::unused_unit, clippy::semicolon_if_nothing_returned, clippy::used_underscore_binding)]
+            #![allow(
+                clippy::unused_unit,
+                clippy::semicolon_if_nothing_returned,
+                clippy::used_underscore_binding,
+                clippy::module_name_repetitions,
+                unreachable_pub,
+            )]
+
             pub struct BarFoot;
             #[doc = r" Initializes the dart api."]
             #[doc = r""]
@@ -244,8 +257,14 @@ mod tests {
         "#,
             r##"
             #![doc(hidden)]
-            #![allow(clippy::unused_unit, clippy::semicolon_if_nothing_returned, clippy::used_underscore_binding)]
-            pub struct BarFoot;
+            #![allow(
+                clippy::unused_unit,
+                clippy::semicolon_if_nothing_returned,
+                clippy::used_underscore_binding,
+                clippy::module_name_repetitions,
+                unreachable_pub,
+            )]
+                        pub struct BarFoot;
             #[doc = r" Initializes the dart api."]
             #[doc = r""]
             #[doc = r" It's safe to be called multiple times and from multiple threads."]
@@ -327,8 +346,14 @@ mod tests {
         "#,
             r##"
             #![doc(hidden)]
-            #![allow(clippy::unused_unit, clippy::semicolon_if_nothing_returned, clippy::used_underscore_binding)]
-            pub struct BarFoot;
+            #![allow(
+                clippy::unused_unit,
+                clippy::semicolon_if_nothing_returned,
+                clippy::used_underscore_binding,
+                clippy::module_name_repetitions,
+                unreachable_pub,
+            )]
+                        pub struct BarFoot;
             #[doc = r" Initializes the dart api."]
             #[doc = r""]
             #[doc = r" It's safe to be called multiple times and from multiple threads."]
