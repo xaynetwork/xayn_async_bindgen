@@ -8,9 +8,6 @@ on:
 permissions:
   contents: read
 
-env:
-  CARGO_NET_GIT_FETCH_WITH_CLI: true
-
 jobs:
   audit:
     name: Rust Audit
@@ -20,12 +17,6 @@ jobs:
         uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579 # v2.4.0
         with:
           ref: main
-
-      - name: Install SSH key
-        uses: shimataro/ssh-key-action@v2
-        with:
-          key: ${{ secrets.SSH }}
-          known_hosts: ${{ secrets.KNOWN_HOSTS }}
 
       - name: Run cargo-audit
         id: cargo-audit
