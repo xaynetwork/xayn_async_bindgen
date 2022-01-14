@@ -213,7 +213,7 @@ mod tests {
             #[doc = r" See the `spawn` method documentation of the `PreparedCompleter`."]
             #[no_mangle]
             pub unsafe extern "C" fn async_bindgen_dart_call__bar_foot__dodo(
-                async_bindgen_dart_port_id: ::async_bindgen::dart::DartPortId,
+                async_bindgen_dart_port_id: i64,
                 async_bindgen_dart_completer_id: i64
             ) -> u8 {
                 match ::async_bindgen::dart::PreparedCompleter::new(
@@ -298,7 +298,7 @@ mod tests {
             pub unsafe extern "C" fn async_bindgen_dart_call__bar_foot__dork(
                 x: i32,
                 y: *const i32,
-                async_bindgen_dart_port_id: ::async_bindgen::dart::DartPortId,
+                async_bindgen_dart_port_id: i64,
                 async_bindgen_dart_completer_id: i64
             ) -> u8 {
                 match ::async_bindgen::dart::PreparedCompleter::new(
@@ -385,7 +385,7 @@ mod tests {
             #[doc = r" See the `spawn` method documentation of the `PreparedCompleter`."]
             #[no_mangle]
             pub unsafe extern "C" fn async_bindgen_dart_call__bar_foot__dodo(
-                async_bindgen_dart_port_id: ::async_bindgen::dart::DartPortId,
+                async_bindgen_dart_port_id: i64,
                 async_bindgen_dart_completer_id: i64
             ) -> u8 {
                 match ::async_bindgen::dart::PreparedCompleter::new(
@@ -427,7 +427,7 @@ mod tests {
             pub unsafe extern "C" fn async_bindgen_dart_call__bar_foot__dork(
                 x: i32,
                 y: *const i32,
-                async_bindgen_dart_port_id: ::async_bindgen::dart::DartPortId,
+                async_bindgen_dart_port_id: i64,
                 async_bindgen_dart_completer_id: i64
             ) -> u8 {
                 match ::async_bindgen::dart::PreparedCompleter::new(

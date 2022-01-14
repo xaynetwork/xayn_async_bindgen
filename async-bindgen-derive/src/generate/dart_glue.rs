@@ -16,16 +16,13 @@ use proc_macro2::{Span, TokenStream};
 use quote::quote;
 use syn::{Ident, Path};
 
-use crate::{
-    parse::function::FunctionInput,
-    utils::{type_from_name, type_from_path_and_name},
-};
+use crate::{parse::function::FunctionInput, utils::type_from_name};
 
 pub(crate) fn additional_dart_inputs() -> Vec<FunctionInput> {
     vec![
         FunctionInput::new(
             Ident::new("async_bindgen_dart_port_id", Span::call_site()),
-            type_from_path_and_name(path_prefix(), "DartPortId"),
+            type_from_name("i64"),
         ),
         FunctionInput::new(
             Ident::new("async_bindgen_dart_completer_id", Span::call_site()),
