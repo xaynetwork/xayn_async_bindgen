@@ -32,4 +32,5 @@
 
 pub use async_bindgen_derive::api;
 
+pub mod async_runtime;
 pub mod dart;
