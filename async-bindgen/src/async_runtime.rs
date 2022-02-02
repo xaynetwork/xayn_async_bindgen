@@ -20,15 +20,15 @@ use once_cell::sync::OnceCell;
 
 static RUNTIME: OnceCell<Runtime> = OnceCell::new();
 
-/// Runs a closure inside of an runtime.
+/// Runs a closure inside of a runtime.
 ///
-/// If we are already are inside of an runtime that runtime
+/// If we already are inside of a runtime, that runtime
 /// is used.
 ///
 /// If we are not in a runtime a new runtime is created.
 ///
 /// For now there is no way to interact with that runtime besides
-/// this method, similar there is for now no way to set an external
+/// this method, similar there is for now no way to set an externally
 /// created runtime.
 ///
 /// # Panics
@@ -37,7 +37,7 @@ static RUNTIME: OnceCell<Runtime> = OnceCell::new();
 ///
 /// Normally creating a runtime doesn't fail.
 ///
-/// Through `tokio` doesn't document when runtime creation
+/// Though `tokio` doesn't document when runtime creation
 /// can fail.
 pub fn with_runtime<R>(run: impl FnOnce() -> R) -> R {
     if Handle::try_current().is_ok() {
