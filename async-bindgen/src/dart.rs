@@ -27,6 +27,8 @@ use thiserror::Error;
 
 pub use xayn_dart_api_dl::{initialize_dart_api_dl, ports::DartPortId};
 
+use crate::async_runtime::spawn;
+
 /// An id indicating which future will be completed.
 pub type CompleterId = i64;
 /// A magic way to pass back results (currently this is a pointer turned into an int).
@@ -147,18 +149,6 @@ impl Drop for PreparedCompleter {
 #[derive(Debug, Error)]
 #[error("Setting up the completer failed.")]
 pub struct CompleterSetupFailed;
-
-/// Spawns the future.
-///
-// In the future this should allow different implementations (potentially
-// with a cfg, for now only async-std as it's easier to use).
-fn spawn(future: impl Future<Output = ()> + Send + 'static) {
-    // noticeable more complex with tokio as:
-    // - We need a handle to the runtime, but are not in the runtime
-    //  - So we need to store the handle in some global slot and
-    //    have an init runtime function.
-    async_std::task::spawn(future);
-}
 
 /// Undos what `encode_box_pointer` does.
 ///
