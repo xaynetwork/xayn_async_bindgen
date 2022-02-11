@@ -84,9 +84,18 @@ impl AsyncFunctionSignature {
                 let functions = functions
                     .into_iter()
                     .map(|(name, (call_fn, ret_fn))| {
-                        //FIXME better error
-                        let call_fn = call_fn.expect("Part of async glue missing: call fn.");
-                        let ret_fn = ret_fn.expect("Part of async glue missing: ret fn.");
+                        let call_fn = call_fn.unwrap_or_else(|| {
+                            panic!(
+                                "Part of async glue missing for {:?} in {:?}: call function.",
+                                name, mod_name
+                            )
+                        });
+                        let ret_fn = ret_fn.unwrap_or_else(|| {
+                            panic!(
+                                "Part of async glue missing for {:?} in {:?}: return function.",
+                                name, mod_name
+                            )
+                        });
                         AsyncFunctionSignature::from_call_and_ret_func(name, call_fn, ret_fn)
                     })
                     .collect();
