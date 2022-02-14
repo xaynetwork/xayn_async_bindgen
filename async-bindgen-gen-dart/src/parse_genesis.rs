@@ -206,7 +206,7 @@ static SNIFF_FUNCTION_REGEX: Lazy<Regex> = Lazy::new(|| {
         r"(?x)
         (?:\n|^)
         (?P<doc>(?:\s*///(?:\s.*)?\n)*)
-        \s*(?P<output>[a-zA-Z0-9_<>.]+)\s(?P<func_name>[[:word:]]+)\(\n
+        \s*(?P<output>[a-zA-Z0-9_<>.]+)\s*(?P<func_name>[[:word:]]+)\(\n
             (?P<inputs>(?:\s+[a-zA-Z0-9_<>.]+\s[[:word:]]+,\n)*)
         \s*\)\s\{\n
     ",
