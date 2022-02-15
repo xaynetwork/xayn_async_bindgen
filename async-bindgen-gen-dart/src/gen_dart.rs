@@ -186,7 +186,7 @@ mod tests {
             import 'package:async_bindgen_dart_utils/async_bindgen_dart_utils.dart'
                 show CouldNotInitializeDartApiError, FfiCompleterRegistry;
             // ignore: always_use_package_imports
-            import './buddy.dodo.ffigen.dart' show XainFfi;
+            import './buddy.dodo.ffigen.dart';
 
             class FooBar {
                 final XainFfi _inner;
