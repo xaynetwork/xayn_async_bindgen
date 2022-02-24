@@ -78,7 +78,7 @@ impl AsyncFunctionSignature {
             }
         }
 
-        modules_to_functions_to_parts
+        let res: HashMap<String, Vec<AsyncFunctionSignature>> = modules_to_functions_to_parts
             .into_iter()
             .map(|(mod_name, functions)| {
                 let functions = functions
@@ -101,7 +101,13 @@ impl AsyncFunctionSignature {
                     .collect();
                 (mod_name, functions)
             })
-            .collect()
+            .collect();
+
+        if res.is_empty() {
+            panic!("Not a single async-ffi module found.");
+        }
+
+        res
     }
 }
 
