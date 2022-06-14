@@ -5,7 +5,6 @@ members = [
     "async-bindgen-gen-dart",
     "integration-tests-bindings"
 ]
-resolver = "2"
 
 [patch.crates-io.async-bindgen]
 path = "./async-bindgen"
