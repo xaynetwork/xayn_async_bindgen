@@ -15,6 +15,12 @@ cargo build -p integration-tests-bindings
 cargo run -p async-bindgen-gen-dart -- \
     --ffi-class IntegrationTestsFfi \
     --genesis integration_tests/lib/src/genesis.ffigen.dart
-cd integration_tests
+
+cd async_bindgen_dart_utils
 dart pub get
+dart analyze
+
+cd ../integration_tests
+dart pub get
+dart analyze
 dart test
